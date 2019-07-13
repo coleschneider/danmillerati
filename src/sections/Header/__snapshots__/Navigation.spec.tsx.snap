@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation should hide the items if isOpen is false 1`] = `ShallowWrapper {}`;
+
+exports[`Navigation should show the items if isOpen is true 1`] = `ShallowWrapper {}`;

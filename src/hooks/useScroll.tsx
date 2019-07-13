@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 
-function handleStickyness(node: any, setText: any) {
+type StickyCb = (isSticky: boolean) => void;
+function handleStickyness(node: HTMLElement, setText: StickyCb) {
     node.classList.add("sticky");
     setText(true);
 }
 
-function handleNormalBehaviour(node: HTMLElement, setText: any) {
+function handleNormalBehaviour(node: HTMLElement, setText: StickyCb) {
     node.classList.remove("sticky");
     setText(false);
 }
 
-function clearEventHandler(scrollCallBack: any) {
-    window.removeEventListener("scroll", scrollCallBack);
+function clearEventHandler(
+    scrollCallBack: void | EventListenerOrEventListenerObject
+) {
+    window.removeEventListener(
+        "scroll",
+        scrollCallBack as EventListenerOrEventListenerObject
+    );
 }
-function checkOffset(node: HTMLElement, sticky: number, setText: Function) {
+function checkOffset(node: HTMLElement, sticky: number, setText: StickyCb) {
     if (window.pageYOffset > sticky) {
         handleStickyness(node, setText);
     }

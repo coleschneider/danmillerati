@@ -1,5 +1,4 @@
 import React from "react";
-import { Route, Link, Switch } from "react-router-dom";
 import posed, { PoseGroup } from "react-pose";
 import styled from "styled-components";
 import Hero from "../../sections/Hero";
@@ -98,8 +97,6 @@ function useTextAnimation(words: string[]) {
         activeWord === words.length - 1 ? setWord(0) : setWord(activeWord + 1);
     React.useEffect(() => {
         const interval = setTimeout(() => setNextWord(), 2000);
-
-        // this will clear Timeout when component unmont like in willComponentUnmount
         return () => {
             clearTimeout(interval);
         };
@@ -108,8 +105,6 @@ function useTextAnimation(words: string[]) {
 }
 function Home() {
     const words = ["Auto", "Boat", "Aircrafts"];
-    // useEffect will run only one time
-    // if you pass a value to array, like this [data] than clearTimeout will run every time this value changes (useEffect re-run)
 
     const word = useTextAnimation(words);
     const prevWord = usePrevious({ value: word });

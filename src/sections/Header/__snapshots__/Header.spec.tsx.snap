@@ -1,3 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Header should match the snapshot 1`] = `<Header />`;
+exports[`Header should match the snapshot 1`] = `
+<Header__HeadroomWrapper>
+  <Header__HeadroomUnfixed>
+    <Header__MenuOverlay
+      isOpen={false}
+    />
+    <Header__Nav
+      id="nav-id"
+      isFixed={false}
+      isOpen={false}
+    >
+      <Menu
+        isOpen={false}
+        onClick={[Function]}
+      />
+      <Navigation
+        isFixed={false}
+        isOpen={false}
+      />
+    </Header__Nav>
+  </Header__HeadroomUnfixed>
+</Header__HeadroomWrapper>
+`;

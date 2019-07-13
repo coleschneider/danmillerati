@@ -132,7 +132,7 @@ const ImageDescription = styled.span`
     font-weight: bold;
     margin: 1rem 0 0;
 `;
-const ImagePreview = images.map(({ src, to, description }, i) => (
+const ImagePreview = images.map(({ src, to, description }) => (
     <WorkItem key={src}>
         <WorkLink to={`/photos/${to}`}>
             <ImageWrapper>

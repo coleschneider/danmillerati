@@ -84,8 +84,8 @@ const Word = styled(SlideWord)`
     text-align: center;
 `;
 
-function usePrevious({ value }: { value: any }) {
-    const ref = React.useRef();
+function usePrevious({ value }: { value: string }) {
+    const ref = React.useRef<string>();
     React.useEffect(() => {
         ref.current = value;
     });

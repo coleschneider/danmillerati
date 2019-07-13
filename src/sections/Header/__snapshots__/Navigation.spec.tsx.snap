@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation should hide the items if isOpen is false 1`] = `
+<Navigation__ListContainer>
+  <Logo
+    isFixed={false}
+  />
+  <Navigation__MenuItem
+    key="/"
+    pose="closed"
+  >
+    <Link
+      onClick={[Function]}
+      to="/"
+    >
+      Home
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/about"
+    pose="closed"
+  >
+    <Link
+      onClick={[Function]}
+      to="/about"
+    >
+      About
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/contact"
+    pose="closed"
+  >
+    <Link
+      onClick={[Function]}
+      to="/contact"
+    >
+      Contact
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/gallery"
+    pose="closed"
+  >
+    <Link
+      onClick={[Function]}
+      to="/gallery"
+    >
+      Gallery
+    </Link>
+  </Navigation__MenuItem>
+</Navigation__ListContainer>
+`;
+
+exports[`Navigation should show the items if isOpen is true 1`] = `
+<Navigation__ListContainer>
+  <Logo
+    isFixed={false}
+  />
+  <Navigation__MenuItem
+    key="/"
+    pose="open"
+  >
+    <Link
+      onClick={[Function]}
+      to="/"
+    >
+      Home
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/about"
+    pose="open"
+  >
+    <Link
+      onClick={[Function]}
+      to="/about"
+    >
+      About
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/contact"
+    pose="open"
+  >
+    <Link
+      onClick={[Function]}
+      to="/contact"
+    >
+      Contact
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/gallery"
+    pose="open"
+  >
+    <Link
+      onClick={[Function]}
+      to="/gallery"
+    >
+      Gallery
+    </Link>
+  </Navigation__MenuItem>
+</Navigation__ListContainer>
+`;

@@ -4,7 +4,7 @@ interface Media {
     mobile: number;
     desktopMin: number;
 }
-const findLayout = ({ mobile, desktopMin }: Media) => {
+const findLayout = ({ desktopMin }: Media) => {
     if (window.innerWidth < desktopMin) {
         return "mobile";
     }

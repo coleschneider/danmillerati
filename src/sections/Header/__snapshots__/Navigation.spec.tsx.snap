@@ -1,5 +1,97 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Navigation should hide the items if isOpen is false 1`] = `ShallowWrapper {}`;
+exports[`Navigation should hide the items if isOpen is false 1`] = `
+<Navigation__ListContainer>
+  <Logo
+    isFixed={false}
+  />
+  <Navigation__MenuItem
+    key="/"
+    pose="closed"
+  >
+    <Link
+      to="/"
+    >
+      Home
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/about"
+    pose="closed"
+  >
+    <Link
+      to="/about"
+    >
+      About
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/contact"
+    pose="closed"
+  >
+    <Link
+      to="/contact"
+    >
+      Contact
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/gallery"
+    pose="closed"
+  >
+    <Link
+      to="/gallery"
+    >
+      Gallery
+    </Link>
+  </Navigation__MenuItem>
+</Navigation__ListContainer>
+`;
 
-exports[`Navigation should show the items if isOpen is true 1`] = `ShallowWrapper {}`;
+exports[`Navigation should show the items if isOpen is true 1`] = `
+<Navigation__ListContainer>
+  <Logo
+    isFixed={false}
+  />
+  <Navigation__MenuItem
+    key="/"
+    pose="open"
+  >
+    <Link
+      to="/"
+    >
+      Home
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/about"
+    pose="open"
+  >
+    <Link
+      to="/about"
+    >
+      About
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/contact"
+    pose="open"
+  >
+    <Link
+      to="/contact"
+    >
+      Contact
+    </Link>
+  </Navigation__MenuItem>
+  <Navigation__MenuItem
+    key="/gallery"
+    pose="open"
+  >
+    <Link
+      to="/gallery"
+    >
+      Gallery
+    </Link>
+  </Navigation__MenuItem>
+</Navigation__ListContainer>
+`;

@@ -1,8 +1,15 @@
 import React from "react";
-import { Route, Link, Switch } from "react-router-dom";
+import {
+    Route,
+    Link,
+    Switch,
+    matchPath,
+    RouteComponentProps
+} from "react-router-dom";
 import posed, { PoseGroup } from "react-pose";
 import styled from "styled-components";
 import Home from "./pages/Home/Home";
+import Gallery from "./pages/Gallery/Gallery";
 import Header from "./sections/Header/Header";
 import Footer from "./sections/Footer/Footer";
 import devices from "./theme/devices";
@@ -102,29 +109,47 @@ const App: React.FC = () => {
     return (
         <ErrorBoundary>
             <Route
-                render={({ location }) => (
-                    <div className="App_Container">
-                        <Header />
-                        <PoseGroup>
-                            <Main key={location.pathname}>
-                                <Switch location={location}>
-                                    <Route
-                                        exact
-                                        path="/"
-                                        component={Home}
-                                        key="home"
-                                    />
-                                    <Route
-                                        path="/about"
-                                        component={Home}
-                                        key="about"
-                                    />
-                                </Switch>
-                                <Footer />
-                            </Main>
-                        </PoseGroup>
-                    </div>
-                )}
+                render={(props: RouteComponentProps) => {
+                    const isGalleryRoutes = matchPath(props.location.pathname, {
+                        path: "/gallery/:currentIndex?"
+                    });
+
+                    const { location } = props;
+                    return (
+                        <div className="App_Container">
+                            <Header
+                                displayBack={
+                                    isGalleryRoutes
+                                        ? isGalleryRoutes.isExact
+                                        : false
+                                }
+                            />
+                            <Route
+                                path="/gallery/:currentIndex?"
+                                component={Gallery}
+                                key="about"
+                            />
+                            <Switch location={location}>
+                                <PoseGroup>
+                                    <Main key={location.pathname}>
+                                        <Route
+                                            exact
+                                            path="/"
+                                            component={Home}
+                                            key="home"
+                                        />
+                                        <Route
+                                            path="/about"
+                                            component={Home}
+                                            key="about"
+                                        />
+                                    </Main>
+                                </PoseGroup>
+                            </Switch>
+                            {!isGalleryRoutes && <Footer />}
+                        </div>
+                    );
+                }}
             />
         </ErrorBoundary>
     );

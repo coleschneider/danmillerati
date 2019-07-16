@@ -24,7 +24,7 @@ declare module "*.jpg" {
     export default src;
 }
 
-declare module "*.jpeg" {
+declare module "*.jpg" {
     const src: string;
     export default src;
 }
@@ -75,4 +75,4 @@ interface HeaderProps {
     toggle: () => void;
     isFixed: boolean;
 }
-type IconTypes = "Logo" | "Facebook";
+type IconTypes = "Logo" | "Facebook" | "Back";

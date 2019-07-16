@@ -82,12 +82,16 @@ const MenuItem = styled(Item)`
     }
 `;
 
-const Logo = ({ isFixed }: Partial<HeaderProps>) => (
+const Logo = ({
+    isFixed,
+    iconType,
+    viewBox
+}: Partial<HeaderProps> & { iconType: IconTypes; viewBox: string }) => (
     <LogoWrapper>
         <LogoLink to="/">
             <LogoIcon
-                viewBox="0 0 194.69 53.44"
-                iconType="Logo"
+                viewBox={viewBox}
+                iconType={iconType}
                 height="56px"
                 isFixed={isFixed}
             />
@@ -106,27 +110,38 @@ export const headerLinks: HeaderLink[] = [
     { text: "Gallery", to: "/gallery" }
 ];
 
-const Navigation = ({ isOpen, isFixed, toggle }: HeaderProps) => {
+const Navigation = ({
+    isOpen,
+    isFixed,
+    toggle,
+    displayBack
+}: HeaderProps & { displayBack: boolean }) => {
     const { history } = useRouter();
     const handleClick = (e: React.SyntheticEvent, to: string) => {
         e.preventDefault();
         toggle();
         history.push(to);
     };
+
     return (
         <ListContainer>
-            <Logo isFixed={isFixed} />
-            {headerLinks.map(({ text, to }) => (
-                <MenuItem key={to} pose={isOpen ? "open" : "closed"}>
-                    <Link
-                        onClick={e => handleClick(e, to)}
-                        className={isFixed ? "stick" : undefined}
-                        to={to}
-                    >
-                        {text}
-                    </Link>
-                </MenuItem>
-            ))}
+            <Logo
+                viewBox={displayBack ? "0 0 24 24" : "0 0 194.69 53.44"}
+                iconType={displayBack ? "Back" : "Logo"}
+                isFixed={isFixed}
+            />
+            {!displayBack &&
+                headerLinks.map(({ text, to }) => (
+                    <MenuItem key={to} pose={isOpen ? "open" : "closed"}>
+                        <Link
+                            onClick={e => handleClick(e, to)}
+                            className={isFixed ? "stick" : undefined}
+                            to={to}
+                        >
+                            {text}
+                        </Link>
+                    </MenuItem>
+                ))}
         </ListContainer>
     );
 };

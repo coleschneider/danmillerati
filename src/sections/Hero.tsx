@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import frontF1 from "../photos/blackiesseats.jpg";
+import frontF1 from "../photos/lg/blackiesseats.jpg";
 import devices from "../theme/devices";
 
 const ImageWrapper = styled.div`

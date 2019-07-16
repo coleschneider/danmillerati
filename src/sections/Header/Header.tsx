@@ -80,7 +80,7 @@ const Nav = styled.nav<FixedNav>`
     }
 `;
 
-const Header = () => {
+const Header = ({ displayBack }: { displayBack: boolean }) => {
     const [isOpen, toggle] = React.useState(false);
     const isFixed = useScroll("nav-id");
 
@@ -92,6 +92,7 @@ const Header = () => {
                 <Nav isFixed={isFixed} isOpen={isOpen} id="nav-id">
                     <Menu isOpen={isOpen} onClick={toggleMenu} />
                     <Navigation
+                        displayBack={displayBack}
                         toggle={toggleMenu}
                         isOpen={isOpen}
                         isFixed={isFixed}

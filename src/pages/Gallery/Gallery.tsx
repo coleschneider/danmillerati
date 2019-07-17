@@ -1,7 +1,7 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 // @ts-ignore
 import Carousel from "react-images";
-import Gallery from "react-photo-gallery";
+import Gallery, { RenderImageProps } from "react-photo-gallery";
 
 // import images from './photos'
 import ProgressiveImage from "react-progressive-image";
@@ -10,13 +10,12 @@ import { Route, RouteComponentProps } from "react-router";
 import styled from "styled-components";
 
 import paths from "../../imagePaths";
-
-// import console = require("console");
+import colors from "../../theme/colors";
 
 const images = paths.map(path => ({
     // @ts-ignore
     // eslint-disable-next-line
-    fallBack: require(`../../photos/sm/${path}`),
+    fallback: require(`../../photos/sm/${path}`),
     // @ts-ignore
     // eslint-disable-next-line
     src: require(`../../photos/lg/${path}`),
@@ -35,7 +34,6 @@ const Sidebar = styled.div`
     overflow-y: auto;
     text-align: right;
     visibility: visible;
-    /* z-index: 10000; */
     right: 0;
     display: ${({ theme: { layout } }) =>
         layout === "mobile" ? "none" : "block"};
@@ -50,14 +48,14 @@ const View = styled.div`
     outline: 0;
 `;
 interface ViewProps {
-    data: { src: string; fallBack: string };
+    data: { src: string; fallback: string };
     isFullscreen: boolean;
     isModal: boolean;
     formatters: any;
     index: number;
 }
 interface PropsWithStyles {
-    getStyles: (key: string, d: any) => {};
+    getStyles: (key: string, d: ViewProps) => {};
 }
 const viewCSS = () => ({
     lineHeight: 0,
@@ -65,7 +63,7 @@ const viewCSS = () => ({
     textAlign: "center"
 });
 // @ts-ignore
-function getSource({ data, isFullscreen }): any {
+function getSource({ data, isFullscreen }): string | boolean {
     const { source = data.src } = data;
     if (typeof source === "string") return source;
 
@@ -83,12 +81,13 @@ const ViewRenderer = (props: ViewProps & PropsWithStyles) => {
             // @ts-ignores
             src={data.src}
             // @ts-ignore
-            placeholder={data.fallBack}
+            placeholder={data.fallback}
         >
-            {(src: any, loading: boolean) => {
+            {(src: string, loading: boolean) => {
                 return (
                     <div style={getStyles("view", props)}>
                         {loading && <div className="loader" />}
+
                         <img
                             {...innerProps}
                             style={{
@@ -113,29 +112,29 @@ const ViewRenderer = (props: ViewProps & PropsWithStyles) => {
 interface State {
     currentIndex: string;
 }
+const getViewStyles = (base: React.CSSProperties) => ({
+    ...base,
+    alignItems: "center",
+    display: "flex ",
+    backgroundColor: colors.black,
+    height: "calc(100vh)",
+    justifyContent: "center",
+    "& > img": {
+        width: "100%"
+    }
+});
+const getContainerStyles = (base: React.CSSProperties) => ({
+    ...base,
+    height: "100vh"
+});
 export default class RouterGallery extends React.Component<
     RouteComponentProps<{ currentIndex: string }>,
     State
 > {
-    componentDidMount() {
-        // @ts-ignore
-        // eslint-disable-next-line
-        this.props.location.state = { gal: true };
-    }
-
-    componentWillUnmount() {
-        // @ts-ignore
-        // eslint-disable-next-line
-        this.props.location.state = undefined
-    }
-    // @ts-ignore
-    // eslint-disable-next-line
     handleViewChange = (currentIndex: number) => {
         const { history } = this.props;
-
         // do not influence history on browser back/forward
         // if (history.action === "POP") return;
-
         history.push(`/gallery/${currentIndex.toString()}`);
     };
 
@@ -143,59 +142,32 @@ export default class RouterGallery extends React.Component<
         const { match } = this.props;
         return match ? parseInt(match.params.currentIndex, 10) || 0 : 0;
     };
-    // @ts-ignore
-    // eslint-disable-next-line
-    openLightbox = (ind, { index }) => {
+
+    openLightbox = (e: React.SyntheticEvent, { index }: { index: number }) => {
         this.handleViewChange(index);
     };
 
     render() {
-        // @ts-ignore
-        // eslint-disable-next-line
-        const { isLoading } = this.props;
-
         return (
             <div>
                 <View>
-                    {!isLoading ? (
-                        <Carousel
-                            styles={{
-                                // @ts-ignore
-                                // eslint-disable-next-line
-                                container: base => ({
-                                    ...base,
-                                    height: "100vh"
-                                }),
-                                // @ts-ignore
-                                // eslint-disable-next-line
-                                view: base => ({
-                                    ...base,
-                                    alignItems: "center",
-                                    display: "flex ",
-                                    // position: "relative",
-                                    // line-height: 0;
-
-                                    height: "calc(100vh)",
-                                    justifyContent: "center",
-                                    "& > img": {
-                                        // height : 'calc(100vh - 94px)',
-                                        width: "100%"
-                                    }
-                                })
-                            }}
-                            currentIndex={this.getCurrentView()}
-                            frameProps={{ autoSize: "height" }}
-                            trackProps={{
-                                onViewChange: this.handleViewChange
-                            }}
-                            views={images}
-                            components={{
-                                Header: null,
-                                View: ViewRenderer,
-                                Footer: null
-                            }}
-                        />
-                    ) : null}
+                    <Carousel
+                        styles={{
+                            container: getContainerStyles,
+                            view: getViewStyles
+                        }}
+                        currentIndex={this.getCurrentView()}
+                        frameProps={{ autoSize: "height" }}
+                        trackProps={{
+                            onViewChange: this.handleViewChange
+                        }}
+                        views={images}
+                        components={{
+                            Header: null,
+                            View: ViewRenderer,
+                            Footer: null
+                        }}
+                    />
                 </View>
                 <Sidebar>
                     <Gallery
@@ -205,17 +177,17 @@ export default class RouterGallery extends React.Component<
                         renderImage={props => {
                             return (
                                 <ProgressiveImage
-                                    // @ts-ignore
                                     src={props.photo.src}
                                     // @ts-ignore
-                                    placeholder={props.photo.fallBack}
+                                    placeholder={props.photo.fallback as string}
                                 >
-                                    {(src: any, loading: boolean) => (
+                                    {(src: string, loading: boolean) => (
                                         <img
                                             // @ts-ignore
-                                            onClick={(e: any) =>
-                                                // @ts-ignore
-                                                props.onClick(e, props)
+                                            onClick={e =>
+                                                props.onClick
+                                                    ? props.onClick(e, props)
+                                                    : null
                                             }
                                             style={{
                                                 left: props.left,
@@ -226,12 +198,6 @@ export default class RouterGallery extends React.Component<
                                                 cursor: "pointer",
                                                 width: props.photo.width,
                                                 height: props.photo.height
-                                                // margin: 2px;
-                                                // display: block;
-                                                // position: absolute;
-                                                // left: 159.5px;
-                                                // top: 319px;
-                                                // cursor: pointer;
                                             }}
                                             src={src}
                                             alt=""

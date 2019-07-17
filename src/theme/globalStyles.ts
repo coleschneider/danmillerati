@@ -186,6 +186,7 @@ nav ul li a:hover {
   height: 10em;
 }
 .loader {
+  z-index: 5;
   margin: 60px auto;
   font-size: 10px;
   position: absolute;

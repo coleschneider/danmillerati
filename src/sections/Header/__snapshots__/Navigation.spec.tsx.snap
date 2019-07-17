@@ -3,7 +3,9 @@
 exports[`Navigation should hide the items if isOpen is false 1`] = `
 <Navigation__ListContainer>
   <Logo
+    iconType="Logo"
     isFixed={false}
+    viewBox="0 0 194.69 53.44"
   />
   <Navigation__MenuItem
     key="/"
@@ -55,7 +57,9 @@ exports[`Navigation should hide the items if isOpen is false 1`] = `
 exports[`Navigation should show the items if isOpen is true 1`] = `
 <Navigation__ListContainer>
   <Logo
+    iconType="Logo"
     isFixed={false}
+    viewBox="0 0 194.69 53.44"
   />
   <Navigation__MenuItem
     key="/"

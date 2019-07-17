@@ -1,13 +1,12 @@
 import React, { MouseEvent } from "react";
 // @ts-ignore
 import Carousel from "react-images";
-import Gallery, { RenderImageProps } from "react-photo-gallery";
-
-// import images from './photos'
+import Gallery from "react-photo-gallery";
 import ProgressiveImage from "react-progressive-image";
 
-import { Route, RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router";
 import styled from "styled-components";
+import LazyImage from "../../hooks/LazyImage";
 
 import paths from "../../imagePaths";
 import colors from "../../theme/colors";
@@ -15,13 +14,14 @@ import colors from "../../theme/colors";
 const images = paths.map(path => ({
     // @ts-ignore
     // eslint-disable-next-line
-    fallback: require(`../../photos/sm/${path}`),
+fallback: require(`../../photos/sm/${path}`),
     // @ts-ignore
     // eslint-disable-next-line
-    src: require(`../../photos/lg/${path}`),
+src: require(`../../photos/lg/${path}`),
     width: 2,
     height: 2
 }));
+
 const Sidebar = styled.div`
     position: fixed;
     position: fixed;
@@ -77,12 +77,7 @@ const ViewRenderer = (props: ViewProps & PropsWithStyles) => {
     };
 
     return (
-        <ProgressiveImage
-            // @ts-ignores
-            src={data.src}
-            // @ts-ignore
-            placeholder={data.fallback}
-        >
+        <ProgressiveImage src={data.src} placeholder={data.fallback}>
             {(src: string, loading: boolean) => {
                 return (
                     <div style={getStyles("view", props)}>
@@ -98,8 +93,6 @@ const ViewRenderer = (props: ViewProps & PropsWithStyles) => {
                                 opacity: loading ? 0.8 : 1,
                                 filter: loading ? "blur(25px)" : "blur(0px)"
                             }}
-                            // style={props.getStyle()}
-                            // className={
                             src={src}
                             alt=""
                         />
@@ -152,6 +145,7 @@ export default class RouterGallery extends React.Component<
             <div>
                 <View>
                     <Carousel
+                        views={images}
                         styles={{
                             container: getContainerStyles,
                             view: getViewStyles
@@ -161,7 +155,6 @@ export default class RouterGallery extends React.Component<
                         trackProps={{
                             onViewChange: this.handleViewChange
                         }}
-                        views={images}
                         components={{
                             Header: null,
                             View: ViewRenderer,
@@ -176,34 +169,37 @@ export default class RouterGallery extends React.Component<
                         photos={images}
                         renderImage={props => {
                             return (
-                                <ProgressiveImage
-                                    src={props.photo.src}
+                                // <ProgressiveImage
+                                //     src={props.photo.src}
+                                //     // @ts-ignore
+                                //     placeholder={props.photo.fallback as string}
+                                // >
+                                // @ts-ignore
+                                <LazyImage
                                     // @ts-ignore
-                                    placeholder={props.photo.fallback as string}
-                                >
-                                    {(src: string, loading: boolean) => (
-                                        <img
-                                            // @ts-ignore
-                                            onClick={e =>
-                                                props.onClick
-                                                    ? props.onClick(e, props)
-                                                    : null
-                                            }
-                                            style={{
-                                                left: props.left,
-                                                top: props.top,
-                                                margin: props.margin,
-                                                display: "block",
-                                                position: "absolute",
-                                                cursor: "pointer",
-                                                width: props.photo.width,
-                                                height: props.photo.height
-                                            }}
-                                            src={src}
-                                            alt=""
-                                        />
-                                    )}
-                                </ProgressiveImage>
+                                    key={props.photo.src}
+                                    onClick={e =>
+                                        props.onClick
+                                            ? props.onClick(e, props)
+                                            : null
+                                    }
+                                    // @ts-ignore
+                                    fallback={props.photo.fallback}
+                                    style={{
+                                        left: props.left,
+                                        top: props.top,
+                                        margin: props.margin,
+                                        display: "block",
+                                        position: "absolute",
+                                        cursor: "pointer",
+                                        width: props.photo.width,
+                                        height: props.photo.height
+                                    }}
+                                    src={props.photo.src}
+                                    alt=""
+                                />
+
+                                // </ProgressiveImage>
                             );
                         }}
                         onClick={this.openLightbox}

@@ -110,22 +110,22 @@ const images: ImagePreview[] = [
     {
         src: thirtyTwoCoupe,
         description: "32 Ford 3 Window",
-        to: "32s"
+        to: "5"
     },
     {
         src: fiftySixSeats,
         description: "56' Seats",
-        to: "thirty"
+        to: "24"
     },
     {
         src: fiskerRightFront,
         description: "Fisker",
-        to: "thirtytwo-coupe"
+        to: "97"
     },
     {
         src: jaugeFisker,
         description: "Fisker concept bike",
-        to: "jauge"
+        to: "83"
     }
 ];
 const ImageDescription = styled.span`
@@ -134,7 +134,7 @@ const ImageDescription = styled.span`
 `;
 const ImagePreview = images.map(({ src, to, description }) => (
     <WorkItem key={src}>
-        <WorkLink to={`/photos/${to}`}>
+        <WorkLink to={`/gallery/${to}`}>
             <ImageWrapper>
                 <Padding />
                 <Overlay />

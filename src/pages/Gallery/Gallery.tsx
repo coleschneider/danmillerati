@@ -2,22 +2,26 @@ import React, { MouseEvent } from "react";
 // @ts-ignore
 import Carousel from "react-images";
 import Gallery from "react-photo-gallery";
-import ProgressiveImage from "react-progressive-image";
 
 import { RouteComponentProps } from "react-router";
 import styled from "styled-components";
 import LazyImage from "../../hooks/LazyImage";
-
+import ViewRenderer from "./Renderer";
 import paths from "../../imagePaths";
 import colors from "../../theme/colors";
 
-const images = paths.map(path => ({
-    // @ts-ignore
+export interface Image {
+    fallback: string;
+    src: string;
+    width: number;
+    height: number;
+}
+
+const images: Image[] = paths.map(path => ({
     // eslint-disable-next-line
-fallback: require(`../../photos/sm/${path}`),
-    // @ts-ignore
+    fallback: require(`../../photos/sm/${path}`),
     // eslint-disable-next-line
-src: require(`../../photos/lg/${path}`),
+    src: require(`../../photos/lg/${path}`),
     width: 2,
     height: 2
 }));
@@ -47,61 +51,7 @@ const View = styled.div`
     background: #fff;
     outline: 0;
 `;
-interface ViewProps {
-    data: { src: string; fallback: string };
-    isFullscreen: boolean;
-    isModal: boolean;
-    formatters: any;
-    index: number;
-}
-interface PropsWithStyles {
-    getStyles: (key: string, d: ViewProps) => {};
-}
-const viewCSS = () => ({
-    lineHeight: 0,
-    position: "relative",
-    textAlign: "center"
-});
-// @ts-ignore
-function getSource({ data, isFullscreen }): string | boolean {
-    const { source = data.src } = data;
-    if (typeof source === "string") return source;
 
-    return isFullscreen ? source.fullscreen : source.regular;
-}
-const ViewRenderer = (props: ViewProps & PropsWithStyles) => {
-    const { data, formatters, getStyles, index, isFullscreen, isModal } = props;
-    const innerProps = {
-        alt: formatters.getAltText({ data, index }),
-        src: getSource({ data, isFullscreen })
-    };
-
-    return (
-        <ProgressiveImage src={data.src} placeholder={data.fallback}>
-            {(src: string, loading: boolean) => {
-                return (
-                    <div style={getStyles("view", props)}>
-                        {loading && <div className="loader" />}
-
-                        <img
-                            {...innerProps}
-                            style={{
-                                width: "100%",
-                                height: "auto",
-                                maxWidth: "100%",
-                                maxHeight: "100vh",
-                                opacity: loading ? 0.8 : 1,
-                                filter: loading ? "blur(25px)" : "blur(0px)"
-                            }}
-                            src={src}
-                            alt=""
-                        />
-                    </div>
-                );
-            }}
-        </ProgressiveImage>
-    );
-};
 interface State {
     currentIndex: string;
 }
@@ -126,8 +76,6 @@ export default class RouterGallery extends React.Component<
 > {
     handleViewChange = (currentIndex: number) => {
         const { history } = this.props;
-        // do not influence history on browser back/forward
-        // if (history.action === "POP") return;
         history.push(`/gallery/${currentIndex.toString()}`);
     };
 
@@ -163,6 +111,7 @@ export default class RouterGallery extends React.Component<
                     />
                 </View>
                 <Sidebar>
+                    {/* @ts-ignore */}
                     <Gallery
                         columns={2}
                         direction="column"

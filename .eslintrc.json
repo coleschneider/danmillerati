@@ -26,6 +26,7 @@
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "@typescript-eslint/no-unused-vars": "off",
+    "import/no-cycle": "off",
     "prettier/prettier": "error",
     "@typescript-eslint/no-object-literal-type-assertion": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",

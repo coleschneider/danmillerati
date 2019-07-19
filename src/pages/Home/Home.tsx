@@ -11,8 +11,12 @@ const Container = posed.div({
     enter: { staggerChildren: 50 }
 });
 const Splash = styled(Container)`
-    width: 100%;
-    position: relative;
+    position: sticky;
+    top: 60px;
+    z-index: -1;
+    top: 0;
+    /* width: 100%;
+    position: relative; */
 `;
 const Box = styled.div`
     position: absolute;

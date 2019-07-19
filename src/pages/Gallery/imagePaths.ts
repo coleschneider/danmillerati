@@ -1,4 +1,4 @@
-export default [
+const paths = [
     "1965FordMustangConvertibleSide.jpg",
     "1968-red-mustang-top-up.jpg",
     "1978HondaSS.jpg",
@@ -179,3 +179,21 @@ export default [
     "yellowspeedsterint.jpg",
     "yy8390mustang.jpg"
 ];
+
+export interface Image {
+    fallback: string;
+    src: string;
+    width: number;
+    height: number;
+}
+
+const images: Image[] = paths.map(path => ({
+    // eslint-disable-next-line
+    fallback: require(`../../photos/sm/${path}`),
+    // eslint-disable-next-line
+    src: require(`../../photos/lg/${path}`),
+    width: 2,
+    height: 2
+}));
+
+export default images;

@@ -7,41 +7,9 @@ import { RouteComponentProps } from "react-router";
 import styled from "styled-components";
 import LazyImage from "../../hooks/LazyImage";
 import ViewRenderer from "./Renderer";
-import paths from "../../imagePaths";
+import images from "./imagePaths";
 import colors from "../../theme/colors";
-
-export interface Image {
-    fallback: string;
-    src: string;
-    width: number;
-    height: number;
-}
-
-const images: Image[] = paths.map(path => ({
-    // eslint-disable-next-line
-    fallback: require(`../../photos/sm/${path}`),
-    // eslint-disable-next-line
-    src: require(`../../photos/lg/${path}`),
-    width: 2,
-    height: 2
-}));
-
-const Sidebar = styled.div`
-    position: fixed;
-    position: fixed;
-    top: 0;
-    width: 20rem;
-    height: 100%;
-    background: #fff;
-    outline: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-align: right;
-    visibility: visible;
-    right: 0;
-    display: ${({ theme: { layout } }) =>
-        layout === "mobile" ? "none" : "block"};
-`;
+import Sidebar from "./Sidebar";
 
 const View = styled.div`
     top: 0;
@@ -110,50 +78,8 @@ export default class RouterGallery extends React.Component<
                         }}
                     />
                 </View>
-                <Sidebar>
-                    {/* @ts-ignore */}
-                    <Gallery
-                        columns={2}
-                        direction="column"
-                        photos={images}
-                        renderImage={props => {
-                            return (
-                                // <ProgressiveImage
-                                //     src={props.photo.src}
-                                //     // @ts-ignore
-                                //     placeholder={props.photo.fallback as string}
-                                // >
-                                // @ts-ignore
-                                <LazyImage
-                                    // @ts-ignore
-                                    key={props.photo.src}
-                                    onClick={e =>
-                                        props.onClick
-                                            ? props.onClick(e, props)
-                                            : null
-                                    }
-                                    // @ts-ignore
-                                    fallback={props.photo.fallback}
-                                    style={{
-                                        left: props.left,
-                                        top: props.top,
-                                        margin: props.margin,
-                                        display: "block",
-                                        position: "absolute",
-                                        cursor: "pointer",
-                                        width: props.photo.width,
-                                        height: props.photo.height
-                                    }}
-                                    src={props.photo.src}
-                                    alt=""
-                                />
 
-                                // </ProgressiveImage>
-                            );
-                        }}
-                        onClick={this.openLightbox}
-                    />
-                </Sidebar>
+                <Sidebar onClick={this.openLightbox} />
             </div>
         );
     }

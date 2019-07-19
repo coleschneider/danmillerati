@@ -1,23 +1,19 @@
+import "intersection-observer";
+import "./fonts/index.css";
+import "./index.css";
+import { ThemeProvider } from "styled-components";
 import React from "react";
 import ReactDOM from "react-dom";
-import { ThemeProvider } from "styled-components";
-import theme from "./theme";
-import GlobalStyle from "./theme/globalStyles";
-import { size } from "./theme/devices";
-import useWindowWidth from "./hooks/useWindowSize";
-import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import App from "./App";
 import Router from "./utils/Router";
+import theme from "./theme";
 
 const Routes = () => {
-    const layout = useWindowWidth(size);
     return (
         <Router>
-            <ThemeProvider theme={theme(layout)}>
-                <>
-                    <GlobalStyle />
-                    <App />
-                </>
+            <ThemeProvider theme={theme}>
+                <App />
             </ThemeProvider>
         </Router>
     );

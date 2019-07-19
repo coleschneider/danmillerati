@@ -42,6 +42,7 @@ const MenuIcon = styled.button`
     position: relative;
     float: right;
     width: 3.5rem;
+    outline: none;
     height: 3.5rem;
     color: ${({ theme: { colors } }) => colors.black};
     font-family: inherit;

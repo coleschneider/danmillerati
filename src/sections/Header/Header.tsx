@@ -1,10 +1,11 @@
 import * as React from "react";
 import styled from "styled-components";
+import posed from "react-pose";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import devices from "../../theme/devices";
-import useScroll from "../../hooks/useScroll";
-// eslint-disable-next-line
-import Navigation from "./Navigation";
 import Menu from "./Menu";
+import Navigation from "./Navigation";
+import useScroll from "../../hooks/useScroll";
 
 const HeadroomWrapper = styled.div`
     vertical-align: baseline;
@@ -29,21 +30,31 @@ const HeadroomUnfixed = styled.div`
     box-sizing: border-box;
     display: block;
 `;
-
+const PosedGroupNav = posed.nav({
+    open: {
+        height: "auto",
+        delayChildren: 200,
+        staggerChildren: 50
+    },
+    closed: {
+        height: "56px",
+        staggerChildren: 50,
+        delay: 300
+    }
+});
 const MenuOverlay = styled.div<Partial<HeaderProps>>`
-    height: 100%;
-    width: 100%;
+     /* height: 100%;
+    width: 100%;  */
     position: fixed;
     top: 0;
     left: 0;
     z-index: 99;
-    opacity: ${({ isOpen }) => (isOpen ? "0.8" : "0")};
-    visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
+    /* opacity: ${({ isOpen }) => (isOpen ? "0.8" : "0")};
+    visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")}; */
     display: block;
     background: ${({ theme: { colors } }) => colors.black};
     transition: all 0.56s cubic-bezier(0.52, 0.16, 0.24, 1) 0s;
-
-    @media ${devices.desktop} {
+    @media ${devices.desktopMin} {
         display: none;
     }
 `;
@@ -52,35 +63,32 @@ interface FixedNav {
     isOpen: boolean;
 }
 
-const Nav = styled.nav<FixedNav>`
+const Nav = styled(PosedGroupNav)<FixedNav>`
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
+    background: ${({ theme: { colors } }) => colors.white};
     left: 0;
-    max-height: ${({ isOpen }) => (isOpen ? "100%" : "56px")};
+    /* max-height: ${({ isOpen }) => (isOpen ? "100%" : "56px")}; */
     width: 100%;
     z-index: 99;
     overflow-y: hidden;
-    transition: max-height 0.56s cubic-bezier(0.52, 0.16, 0.24, 1) 0s,
-        background 0.3s ease 0s, border 0.3s ease 0s;
+    transition: background 0.3s ease 0s, border 0.3s ease 0s;
     border-bottom: ${({ theme: { colors } }) => `1px solid ${colors.grey}`};
     overscroll-behavior: contain contain;
-
     @media ${devices.desktop} {
+        line-height: 56px;
         border: ${({ isFixed, theme: { colors } }) =>
             isFixed ? `1px solid ${colors.grey}` : "1px solid transparent"};
-
         background: ${({ isFixed, theme: { colors } }) =>
             isFixed ? colors.white : "transparent"};
-
-        /* max-height: none/s; */
+        max-height: 56px;
         bottom: auto;
-        line-height: 56px;
     }
 `;
 
-const Header = ({ displayBack }: { displayBack: boolean }) => {
+const Header = (props: RouteComponentProps) => {
     const [isOpen, toggle] = React.useState(false);
     const isFixed = useScroll("nav-id");
 
@@ -89,10 +97,15 @@ const Header = ({ displayBack }: { displayBack: boolean }) => {
         <HeadroomWrapper>
             <HeadroomUnfixed>
                 <MenuOverlay isOpen={isOpen} />
-                <Nav isFixed={isFixed} isOpen={isOpen} id="nav-id">
+                <Nav
+                    pose={isOpen ? "open" : "closed"}
+                    isOpen={isOpen}
+                    isFixed={isFixed}
+                    id="nav-id"
+                >
                     <Menu isOpen={isOpen} onClick={toggleMenu} />
                     <Navigation
-                        displayBack={displayBack}
+                        {...props}
                         toggle={toggleMenu}
                         isOpen={isOpen}
                         isFixed={isFixed}
@@ -102,4 +115,4 @@ const Header = ({ displayBack }: { displayBack: boolean }) => {
         </HeadroomWrapper>
     );
 };
-export default Header;
+export default withRouter(Header);

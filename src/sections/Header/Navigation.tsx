@@ -1,25 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import posed from "react-pose";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import LogoIcon from "./logo";
 import devices from "../../theme/devices";
-import useRouter from "../../hooks/useRouter";
 
-const DropdownWrapper = posed.ul({
-    open: {
-        staggerChildren: 10,
-        opacity: 1,
-        height: "auto"
-    },
-    closed: {
-        staggerChildren: 10,
-        opacity: 0,
-        height: "1px"
-    }
-});
-
-const ListContainer = styled(DropdownWrapper)`
+const ListContainer = styled.ul`
     text-align: left;
     list-style: none;
 
@@ -34,8 +20,6 @@ const ListContainer = styled(DropdownWrapper)`
     padding: 6em 0px 0px 1em;
 `;
 const LogoWrapper = styled.li`
-    transform: none;
-    opacity: 1;
     position: absolute;
     top: 0px;
     left: 1em;
@@ -68,14 +52,14 @@ const LogoLink = styled(Link)`
 `;
 
 const Item = posed.li({
-    open: { y: 0, opacity: 1 },
-    closed: { y: 0, opacity: 0 }
+    open: { x: 0, opacity: 1 },
+    closed: { x: -100, opacity: 0 }
 });
 const MenuItem = styled(Item)`
     opacity: 0;
     @media ${devices.desktop} {
         display: inline-block;
-        transform: none;
+        transform: none !important;
         opacity: 1 !important;
         transition: none 0s ease 0s;
         margin: 0px 0px 0px 1.25em;
@@ -114,9 +98,8 @@ const Navigation = ({
     isOpen,
     isFixed,
     toggle,
-    displayBack
-}: HeaderProps & { displayBack: boolean }) => {
-    const { history } = useRouter();
+    history
+}: RouteComponentProps & HeaderProps) => {
     const handleClick = (e: React.SyntheticEvent, to: string) => {
         e.preventDefault();
         toggle();
@@ -126,22 +109,21 @@ const Navigation = ({
     return (
         <ListContainer>
             <Logo
-                viewBox={displayBack ? "0 0 24 24" : "0 0 194.69 53.44"}
-                iconType={displayBack ? "Back" : "Logo"}
+                viewBox="0 0 194.69 53.44"
+                iconType="Logo"
                 isFixed={isFixed}
             />
-            {!displayBack &&
-                headerLinks.map(({ text, to }) => (
-                    <MenuItem key={to} pose={isOpen ? "open" : "closed"}>
-                        <Link
-                            onClick={e => handleClick(e, to)}
-                            className={isFixed ? "stick" : undefined}
-                            to={to}
-                        >
-                            {text}
-                        </Link>
-                    </MenuItem>
-                ))}
+            {headerLinks.map(({ text, to }) => (
+                <MenuItem key={to} pose={isOpen ? "open" : "closed"}>
+                    <Link
+                        onClick={e => handleClick(e, to)}
+                        className={isFixed ? "stick" : undefined}
+                        to={to}
+                    >
+                        {text}
+                    </Link>
+                </MenuItem>
+            ))}
         </ListContainer>
     );
 };

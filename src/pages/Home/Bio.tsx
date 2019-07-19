@@ -22,6 +22,7 @@ const SectionHeader = styled.h2`
 `;
 const BioWrapper = styled.div`
     padding: 2em 0px;
+    background: ${({ theme: { colors } }) => colors.white};
     @media ${devices.desktopMin} {
         padding: 4em 0px;
     }

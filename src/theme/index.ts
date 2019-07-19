@@ -2,10 +2,9 @@ import { DefaultTheme } from "styled-components";
 import colors from "./colors";
 import devices from "./devices";
 
-const myTheme = (layout: string): DefaultTheme => ({
+const myTheme = (): DefaultTheme => ({
     devices,
-    colors,
-    layout
+    colors
 });
 
 export default myTheme;

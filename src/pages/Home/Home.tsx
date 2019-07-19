@@ -7,12 +7,24 @@ import Bio from "./Bio";
 import Testimonials from "../../sections/Testimonials";
 import WorkSamples from "../../sections/WorkSamples";
 
-const Container = posed.div({
-    enter: { staggerChildren: 50 }
+const SlideWordWrapper = posed.div({
+    open: {
+        delayChildren: 200,
+        staggerChildren: 500,
+        transition: { type: "spring", stiffness: 800, damping: 20 }
+    },
+    closed: { delay: 300 }
 });
-const Splash = styled(Container)`
-    width: 100%;
-    position: relative;
+
+const Item = posed.h2({
+    open: { y: "0%", opacity: 1 },
+    closed: { y: "100%", opacity: 0 }
+});
+
+const Splash = styled.div`
+    top: 60px;
+    z-index: -1;
+    top: 0;
 `;
 const Box = styled.div`
     position: absolute;
@@ -24,17 +36,13 @@ const Box = styled.div`
     padding: 0px 2rem;
 `;
 
-const FadeText = posed.h2({
-    enter: { y: 0, opacity: 1 },
-    exit: { y: 50, opacity: 0 }
-});
-const H2 = styled(FadeText)`
+const H2 = styled(Item)`
     opacity: 1;
     color: white;
     padding: 0 0 1rem;
     font-size: 2.5em;
 `;
-const H3 = styled(FadeText)`
+const H3 = styled(Item)`
     font-family: A, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif;
     color: white;
@@ -103,6 +111,7 @@ function useTextAnimation(words: string[]) {
     });
     return words[activeWord];
 }
+
 function Home() {
     const words = ["Auto", "Boat", "Aircrafts"];
 
@@ -111,25 +120,29 @@ function Home() {
     return (
         <>
             <Splash>
-                <Box>
-                    <H2>
-                        Dan Miller&#39;s{" "}
-                        <Title>
-                            <PoseGroup>
-                                <Word
-                                    posed={prevWord !== word ? "enter" : "exit"}
-                                    key={word}
-                                >
-                                    {word}
-                                </Word>
-                            </PoseGroup>
-                        </Title>
-                        Upholstery
-                    </H2>
+                <Box key="box">
+                    <SlideWordWrapper initialPose="closed" pose="open">
+                        <H2 key="h2">
+                            Dan Miller&#39;s{" "}
+                            <Title>
+                                <PoseGroup>
+                                    <Word
+                                        posed={
+                                            prevWord !== word ? "enter" : "exit"
+                                        }
+                                        key={word}
+                                    >
+                                        {word}
+                                    </Word>
+                                </PoseGroup>
+                            </Title>
+                            Upholstery
+                        </H2>
 
-                    <H3>Since 1979</H3>
+                        <H3 key="h3"> Since 1979</H3>
+                    </SlideWordWrapper>
                 </Box>
-                <Hero />
+                <Hero key="some" />
             </Splash>
             <Bio />
             <Testimonials />

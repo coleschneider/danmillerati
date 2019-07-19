@@ -7,7 +7,7 @@ import { RouteComponentProps } from "react-router";
 import styled from "styled-components";
 import LazyImage from "../../hooks/LazyImage";
 import ViewRenderer from "./Renderer";
-import images from "./imagePaths";
+import images, { Image } from "./imagePaths";
 import colors from "../../theme/colors";
 import Sidebar from "./Sidebar";
 
@@ -23,6 +23,19 @@ const View = styled.div`
 interface State {
     currentIndex: string;
 }
+interface Formatter {
+    data: Image;
+    index: number;
+}
+
+const getAltText = ({ data, index }: Formatter) => {
+    if (data.caption) return data.caption;
+    return index;
+};
+const FooterCaption = ({ currentView }: { currentView: Image }) => {
+    const { caption } = currentView;
+    return <h1>{caption}</h1>;
+};
 const getViewStyles = (base: React.CSSProperties) => ({
     ...base,
     alignItems: "center",
@@ -62,6 +75,9 @@ export default class RouterGallery extends React.Component<
                 <View>
                     <Carousel
                         views={images}
+                        formatters={{
+                            getAltText
+                        }}
                         styles={{
                             container: getContainerStyles,
                             view: getViewStyles
@@ -72,9 +88,8 @@ export default class RouterGallery extends React.Component<
                             onViewChange: this.handleViewChange
                         }}
                         components={{
-                            Header: null,
                             View: ViewRenderer,
-                            Footer: null
+                            FooterCaption
                         }}
                     />
                 </View>

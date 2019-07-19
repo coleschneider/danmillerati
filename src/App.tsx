@@ -126,6 +126,7 @@ const App: React.FC = () => {
                             />
                             <Route
                                 path="/gallery/:currentIndex?"
+                                // @ts-ignore
                                 component={Gallery}
                                 key="about"
                             />

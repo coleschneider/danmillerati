@@ -1,101 +1,158 @@
-import React, { MouseEvent } from "react";
+import * as React from "react";
+import styled, { keyframes } from "styled-components";
 // @ts-ignore
-import Carousel from "react-images";
+import LazyLoad from "react-lazy-load";
+// @ts-ignore
+import Carousel, { Modal, ModalGateway } from "react-images";
 import Gallery from "react-photo-gallery";
-
-import { RouteComponentProps } from "react-router";
-import styled from "styled-components";
-import LazyImage from "../../hooks/LazyImage";
-import ViewRenderer from "./Renderer";
 import images, { Image } from "./imagePaths";
-import colors from "../../theme/colors";
-import Sidebar from "./Sidebar";
 
-const View = styled.div`
-    top: 0;
-    width: ${({ theme: { layout } }) =>
-        layout === "desktop" ? "calc(100% - 20rem)" : "100%"};
-    height: 100%;
-    background: #fff;
-    outline: 0;
+const FadeinImg = keyframes`
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1
+    }
 `;
-
-interface State {
-    currentIndex: string;
-}
-interface Formatter {
-    data: Image;
-    index: number;
+interface LoaderProps {
+    src: string;
+    onClick: any;
 }
 
-const getAltText = ({ data, index }: Formatter) => {
-    if (data.caption) return data.caption;
-    return index;
+const Imagewrap = styled.img<{ isLoaded: boolean }>`
+    opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
+    width: 100%;
+    height: auto;
+    animation: ${FadeinImg} cubic-bezier(0.23, 1, 0.32, 1) 1;
+`;
+const ImageLoader = ({ src, onClick }: LoaderProps) => {
+    const [isLoaded, setLoaded] = React.useState(false);
+    const onLoad = () => {
+        setLoaded(true);
+    };
+    return (
+        <Imagewrap
+            style={{
+                breakInside: "avoid",
+                padding: 5
+            }}
+            onClick={onClick}
+            isLoaded={isLoaded}
+            src={src}
+            alt=""
+            onLoad={onLoad}
+        />
+    );
 };
-const FooterCaption = ({ currentView }: { currentView: Image }) => {
-    const { caption } = currentView;
-    return <h1>{caption}</h1>;
-};
-const getViewStyles = (base: React.CSSProperties) => ({
-    ...base,
-    alignItems: "center",
-    display: "flex ",
-    backgroundColor: colors.black,
-    height: "calc(100vh)",
-    justifyContent: "center",
-    "& > img": {
-        width: "100%"
+const Row = styled.div`
+    /* display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* height: 100vw; */
+    /* max-height: 800px; 
+    font-size: 0; */
+    column-count: 3;
+    column-gap: 0;
+`;
+// const g = document.getElementById("grid");
+// @ts-ignore
+function masonry(
+    grid: string,
+    gcLength: number,
+    width: number,
+    height: number,
+    // @ts-ignore
+    gridGutter,
+    dGridCol: number,
+    tGridCol: number,
+    mGridCol: number
+) {
+    // Total number of cells in the masonry
+
+    let gHeight = 0;
+    // Initial height of our masonry
+
+    let i; // Loop counter
+
+    // Calculate the net height of all the cells in the masonry
+    // eslint-disable-next-line
+    for (i = 0; i < gcLength; ++i) {
+        // eslint-disable-next-line
+        gHeight += height + parseInt(gridGutter);
     }
-});
-const getContainerStyles = (base: React.CSSProperties) => ({
-    ...base,
-    height: "100vh"
-});
-export default class RouterGallery extends React.Component<
-    RouteComponentProps<{ currentIndex: string }>,
-    State
-> {
-    handleViewChange = (currentIndex: number) => {
-        const { history } = this.props;
-        history.push(`/gallery/${currentIndex.toString()}`);
-    };
-
-    getCurrentView = () => {
-        const { match } = this.props;
-        return match ? parseInt(match.params.currentIndex, 10) || 0 : 0;
-    };
-
-    openLightbox = (e: React.SyntheticEvent, { index }: { index: number }) => {
-        this.handleViewChange(index);
-    };
-
-    render() {
-        return (
-            <div>
-                <View>
-                    <Carousel
-                        views={images}
-                        formatters={{
-                            getAltText
-                        }}
-                        styles={{
-                            container: getContainerStyles,
-                            view: getViewStyles
-                        }}
-                        currentIndex={this.getCurrentView()}
-                        frameProps={{ autoSize: "height" }}
-                        trackProps={{
-                            onViewChange: this.handleViewChange
-                        }}
-                        components={{
-                            View: ViewRenderer,
-                            FooterCaption
-                        }}
-                    />
-                </View>
-
-                <Sidebar onClick={this.openLightbox} />
-            </div>
-        );
-    }
+    // console.log(g);
+    // if (window.screen.width >= 1024) {
+    //     g.style.height = `${gHeight / dGridCol + gHeight / (gcLength + 1)}px`;
+    // } else if (window.screen.width < 1024 && window.screen.width >= 768) {
+    //     g.style.height = `${gHeight / tGridCol + gHeight / (gcLength + 1)}px`;
+    // } else {
+    //     g.style.height = `${gHeight / mGridCol + gHeight / (gcLength + 1)}px`;
+    // }
 }
+// @ts-ignore
+// eslint-disable-next-line
+const ImageRenderer = (props: any) => {
+    const { photo } = props;
+
+    return (
+        <LazyLoad
+            // eslint-disable-next-line
+            key={photo.name}
+            // eslint-disable-next-line
+            width={photo.width}
+            // eslint-disable-next-line
+            height={photo.height}
+            debounce={false}
+            offsetVertical={500}
+        >
+            <ImageLoader
+                onClick={(e: any) => props.onClick(e, props)}
+                // eslint-disable-next-line
+            src={photo.src} />
+        </LazyLoad>
+    );
+};
+function Grid() {
+    // @ts-ignore
+    // eslint-disable-next-line
+    const [currentImage, setCurrentImage] = React.useState(0);
+    const [viewerIsOpen, setViewerIsOpen] = React.useState(false);
+
+    const openLightbox = React.useCallback((event, { photo, index }) => {
+        setCurrentImage(index);
+        setViewerIsOpen(true);
+    }, []);
+
+    const closeLightbox = () => {
+        setCurrentImage(0);
+        setViewerIsOpen(false);
+    };
+    return (
+        <>
+            <Gallery
+                photos={images}
+                renderImage={ImageRenderer}
+                onClick={openLightbox}
+            />
+            ;
+            <ModalGateway>
+                {viewerIsOpen ? (
+                    <Modal onClose={closeLightbox}>
+                        <Carousel
+                            lazyLoad
+                            currentIndex={currentImage}
+                            // eslint-disable-next-line
+                            views={images.map((x: any) => ({
+                                ...x,
+                                srcset: x.srcSet,
+                                caption: x.title
+                            }))}
+                        />
+                    </Modal>
+                ) : null}
+            </ModalGateway>
+        </>
+    );
+}
+export default Grid;

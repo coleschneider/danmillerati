@@ -39,6 +39,7 @@
     "react-dev-utils": "9.0.1",
     "react-dom": "16.8.6",
     "react-images": "^1.0.0",
+    "react-lazy-load": "^3.0.13",
     "react-lazyload": "^2.6.2",
     "react-photo-gallery": "^8.0.0",
     "react-pose": "4.0.8",

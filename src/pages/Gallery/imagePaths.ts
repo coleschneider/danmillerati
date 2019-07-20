@@ -1092,4 +1092,12 @@ const images: Image[] = paths.map(path => ({
     src: require(`../../photos/lg/${path.name}`),
     ...path
 }));
+
+export const imageFetchStatus = images.reduce(
+    (acc, curr) => {
+        acc[curr.name] = false;
+        return acc;
+    },
+    {} as Record<string, boolean>
+);
 export default images;

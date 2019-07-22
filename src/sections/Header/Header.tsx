@@ -48,7 +48,7 @@ const MenuOverlay = styled.div<Partial<HeaderProps>>`
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 99;
+    z-index: 5;
     /* opacity: ${({ isOpen }) => (isOpen ? "0.8" : "0")};
     visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")}; */
     display: block;
@@ -72,7 +72,7 @@ const Nav = styled(PosedGroupNav)<FixedNav>`
     left: 0;
     /* max-height: ${({ isOpen }) => (isOpen ? "100%" : "56px")}; */
     width: 100%;
-    z-index: 1;
+    z-index: 5;
     overflow-y: hidden;
     transition: background 0.3s ease 0s, border 0.3s ease 0s;
     border-bottom: ${({ theme: { colors } }) => `1px solid ${colors.grey}`};

@@ -13,11 +13,11 @@ import {
 } from "./styles";
 
 const { Close, Next, Prev, FullscreenToggle } = controls;
-
-// const handleArrowKeys = (modal: any, setModal: any) => event => {
-//     if (event.key === `ArrowRight`) setModal(modal + 1);
-//     else if (event.key === `ArrowLeft`) setModal(modal - 1);
-// };
+// @ts-ignore
+const handleArrowKeys = (goPrev, goNext) => (event: KeyboardEvent) => {
+    if (event.key === `ArrowRight`) goNext();
+    else if (event.key === `ArrowLeft`) goPrev();
+};
 
 export default function Modal({
     carousel,
@@ -34,12 +34,18 @@ export default function Modal({
         React.useEffect(() => {
             document.body.style.overflowY = `hidden`;
 
-            // document.addEventListener(`keydown`, handler);
+            document.addEventListener(
+                `keydown`,
+                handleArrowKeys(goPrevImage, goNextImage)
+            );
             return () => {
-                // document.removeEventListener(`keydown`, handler);
+                document.removeEventListener(
+                    `keydown`,
+                    handleArrowKeys(goPrevImage, goNextImage)
+                );
                 document.body.style.removeProperty(`overflow-y`);
             };
-        }, []);
+        }, [goNextImage, goPrevImage]);
         const ref = React.useRef<HTMLDivElement>(null);
         useClickOutside(ref, () => closeLightbox());
         return (
@@ -57,7 +63,9 @@ export default function Modal({
             >
                 <ModalContainer
                     isFullscreen={isFullscreen}
-                    onClick={event => event.stopPropagation()}
+                    onClick={(event: React.SyntheticEvent) =>
+                        event.stopPropagation()
+                    }
                     // {...{ className, fullscreen }}
                     ref={ref}
                 >
@@ -65,6 +73,7 @@ export default function Modal({
                         <>
                             <Close onClick={closeLightbox} />
                             <FullscreenToggle
+                                isFullscreen={isFullscreen}
                                 onClick={() => {
                                     if (!isFullscreen) {
                                         openFullscreen();
@@ -72,7 +81,6 @@ export default function Modal({
                                         closeFullscreen();
                                     }
                                 }}
-                                // {...{ fullscreen }}
                             />
                             <Next onClick={goNextImage} />
                             <Prev onClick={goPrevImage} />

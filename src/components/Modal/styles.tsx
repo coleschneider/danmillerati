@@ -1,3 +1,4 @@
+import * as React from "react";
 import styled, { css } from "styled-components";
 import { Close as Cross } from "styled-icons/material/Close";
 import { NavigateNext } from "styled-icons/material/NavigateNext";
@@ -16,7 +17,7 @@ export const ModalBackground = styled.div<{ open: boolean }>`
     visibility: ${props => (props.open ? `visible` : `hidden`)};
     opacity: ${props => (props.open ? `1` : `0`)};
     transition: 0.5s;
-    z-index: 2;
+    z-index: 10;
 `;
 
 const fullscreen = css`
@@ -27,6 +28,7 @@ const fullscreen = css`
 `;
 interface ModalScreen {
     isFullscreen: boolean;
+    onClick?: (e: React.SyntheticEvent) => void;
 }
 export const ModalContainer = styled.div<ModalScreen>`
     box-sizing: border-box;
@@ -56,16 +58,20 @@ const controlsCss = css`
     }
 `;
 
-const FullscreenToggle = styled(Fullscreen).attrs(
-    (props: { fullscreen: boolean }) => ({
-        as: props.fullscreen && ExitFullscreen
-    })
-)`
+const Open = styled(Fullscreen)`
     ${controlsCss};
     border-radius: 0.4em;
     top: 0.5em;
     right: 2.8em;
 `;
+const Exit = styled(ExitFullscreen)`
+    ${controlsCss};
+    border-radius: 0.4em;
+    top: 0.5em;
+    right: 2.8em;
+`;
+const FullscreenToggle = ({ onClick, isFullscreen }: ModalScreen) =>
+    isFullscreen ? <Exit onClick={onClick} /> : <Open onClick={onClick} />;
 
 const Close = styled(Cross)`
     ${controlsCss};

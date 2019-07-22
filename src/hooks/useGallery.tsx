@@ -44,8 +44,14 @@ const carouselReducer = (state: Carousel, action: GalleryActions) => {
         case "SET_IMAGE":
             return action.payload.activeImage;
         case "NEXT_IMAGE":
+            if (state === images.length - 1) {
+                return 0;
+            }
             return state + 1;
         case "PREV_IMAGE":
+            if (state === 0) {
+                return images.length - 1;
+            }
             return state - 1;
         default:
             return state;

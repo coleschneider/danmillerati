@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import devices from "../theme/devices";
+import devices from "../../theme/devices";
 
 const TestimonialWrapper = styled.div`
     width: 100%;

@@ -43,14 +43,10 @@ const PosedGroupNav = posed.nav({
     }
 });
 const MenuOverlay = styled.div<Partial<HeaderProps>>`
-     /* height: 100%;
-    width: 100%;  */
     position: fixed;
     top: 0;
     left: 0;
     z-index: 5;
-    /* opacity: ${({ isOpen }) => (isOpen ? "0.8" : "0")};
-    visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")}; */
     display: block;
     background: ${({ theme: { colors } }) => colors.black};
     transition: all 0.56s cubic-bezier(0.52, 0.16, 0.24, 1) 0s;
@@ -70,7 +66,6 @@ const Nav = styled(PosedGroupNav)<FixedNav>`
     bottom: 0;
     background: ${({ theme: { colors } }) => colors.white};
     left: 0;
-    /* max-height: ${({ isOpen }) => (isOpen ? "100%" : "56px")}; */
     width: 100%;
     z-index: 5;
     overflow-y: hidden;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import frontF1 from "../photos/lg/blackiesseats.jpg";
-import devices from "../theme/devices";
+import frontF1 from "../../photos/lg/blackiesseats.jpg";
+import devices from "../../theme/devices";
 
 const ImageWrapper = styled.div`
     position: relative;

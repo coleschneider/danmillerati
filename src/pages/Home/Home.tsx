@@ -1,11 +1,11 @@
 import React from "react";
 import posed, { PoseGroup } from "react-pose";
 import styled from "styled-components";
-import Hero from "../../sections/Hero";
+import Hero from "../../components/Hero/Hero";
 import devices from "../../theme/devices";
 import Bio from "./Bio";
-import Testimonials from "../../sections/Testimonials";
-import WorkSamples from "../../sections/WorkSamples";
+import Testimonials from "../../components/Testimonials/Testimonials";
+import WorkSamples from "../../components/Work/Work";
 
 const SlideWordWrapper = posed.div({
     open: {

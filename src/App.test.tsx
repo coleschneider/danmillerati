@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Hero from "./sections/Hero";
+import Hero from "./components/Hero/Hero";
 
 describe("App", () => {
     const spy = jest.fn(); // or `jasmine.createSpy()`

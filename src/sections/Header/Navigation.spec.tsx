@@ -1,12 +1,14 @@
 import * as React from "react";
+import { RouteComponentProps } from "react-router";
 import Navigation from "./Navigation";
 
 describe("Navigation", () => {
     let wrapper;
+    const router = {} as RouteComponentProps;
     it("should hide the items if isOpen is false", () => {
         wrapper = shallow(
             <Navigation
-                displayBack={false}
+                {...router}
                 toggle={jest.fn}
                 isFixed={false}
                 isOpen={false}
@@ -16,12 +18,7 @@ describe("Navigation", () => {
     });
     it("should show the items if isOpen is true", () => {
         wrapper = shallow(
-            <Navigation
-                displayBack={false}
-                toggle={jest.fn}
-                isFixed={false}
-                isOpen
-            />
+            <Navigation {...router} toggle={jest.fn} isFixed={false} isOpen />
         );
         expect(wrapper).toMatchSnapshot();
     });

@@ -1,10 +1,14 @@
 import * as React from "react";
 
 type event = Partial<keyof DocumentEventMap>;
-function useOnClickOutside(ref: any, handler: any) {
+type HandlerFn = (e: Event) => void;
+function useOnClickOutside(
+    ref: React.RefObject<HTMLDivElement>,
+    handler: HandlerFn
+) {
     React.useEffect(() => {
-        const listener = (event: any) => {
-            if (!ref.current || ref.current.contains(event.target)) {
+        const listener = (event: Event) => {
+            if (!ref.current || ref.current.contains(event.target as Node)) {
                 return;
             }
 

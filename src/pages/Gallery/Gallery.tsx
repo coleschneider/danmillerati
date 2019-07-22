@@ -1,43 +1,34 @@
 import * as React from "react";
 
 import Gallery from "react-photo-gallery";
-import images, { Image, imageFetchStatus } from "./imagePaths";
+import images, { imageFetchStatus } from "./imagePaths";
 import ImageLoader from "./Image";
 import Modal from "../../components/Modal/Modal";
-import galleryReducer, { initialState, galleryActions } from "./galleryReducer";
+import useGallery from "../../hooks/useGallery";
 
 interface SlideProps {
-    photo: Image;
-    next: Image;
-    previous: Image;
+    photo: GalleryImage;
+    next: GalleryImage;
+    previous: GalleryImage;
     index: number;
 }
-function Grid() {
-    const [{ loadStatus, activeImage, isOpen }, dispatch] = React.useReducer(
-        galleryReducer,
-        initialState
-    );
-    const { setActiveImage, setImageLoaded, openLightbox } = galleryActions(
-        dispatch
-    );
 
-    const getImage = (name: string) => loadStatus[name];
+function Grid() {
+    const gallery = useGallery();
+    const { setImage, openLightbox, loadImage, imageStatus } = gallery;
+    const getImage = (name: ImageName) => imageStatus[name];
+
     const onGalleryClick = (e: React.SyntheticEvent, { index }: SlideProps) => {
-        setActiveImage(index);
+        setImage(index);
         openLightbox();
     };
     return (
         <>
-            <Modal
-                key="modal"
-                dispatch={dispatch}
-                show={isOpen}
-                activeImage={images[activeImage]}
-            />
+            <Modal key="modal" {...gallery} />
             <Gallery
                 photos={images}
                 onClick={onGalleryClick}
-                renderImage={ImageLoader(setImageLoaded, getImage)}
+                renderImage={ImageLoader(loadImage, getImage)}
             />
         </>
     );

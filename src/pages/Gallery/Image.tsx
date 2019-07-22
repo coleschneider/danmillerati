@@ -2,12 +2,11 @@ import * as React from "react";
 import styled from "styled-components";
 // @ts-ignore
 import LazyLoad from "react-lazy-load";
-import { Image } from "./imagePaths";
 
-type onLoadFn = (event: Props) => void;
-type getLoadStatusFn = (name: string) => boolean;
+type onLoadFn = (name: ImageName) => void;
+type getLoadStatusFn = (name: ImageName) => boolean | undefined;
 export type Props = {
-    photo: Image;
+    photo: GalleryImage;
     index: number;
     margin: number;
     direction: "row" | "column";
@@ -20,7 +19,7 @@ export type Props = {
     containerHeight?: number;
 };
 
-const Imagewrap = styled.img<{ isLoaded: boolean }>`
+const Imagewrap = styled.img<{ isLoaded: boolean | undefined }>`
     opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
     width: 100%;
     transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
@@ -44,7 +43,7 @@ function ImageRenderer(onLoad: onLoadFn, getLoadStatus: getLoadStatusFn) {
                         isLoaded={isLoaded}
                         src={photo.src}
                         alt=""
-                        onLoad={() => onLoad(props)}
+                        onLoad={() => onLoad(photo.name)}
                     />
                 </LazyLoad>
             </div>

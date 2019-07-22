@@ -1,42 +1,36 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import * as React from "react";
-import { ThemeProvider } from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
-
+import images from "../../pages/Gallery/imagePaths";
 import {
+    controls,
     ModalBackground,
     ModalContainer,
-    controls,
     ModalImage,
     ModalImagePadding,
     ModalImageWrapper
 } from "./styles";
-import { galleryActions } from "../../pages/Gallery/galleryReducer";
-import { Image } from "../../pages/Gallery/imagePaths";
 
 const { Close, Next, Prev, FullscreenToggle } = controls;
-// @ts-ignore
-const handleArrowKeys = (modal: any, setModal: any) => event => {
-    if (event.key === `ArrowRight`) setModal(modal + 1);
-    else if (event.key === `ArrowLeft`) setModal(modal - 1);
-};
 
-interface Props {
-    show: boolean;
-    dispatch: React.Dispatch<any>;
-    activeImage: Image;
-}
+// const handleArrowKeys = (modal: any, setModal: any) => event => {
+//     if (event.key === `ArrowRight`) setModal(modal + 1);
+//     else if (event.key === `ArrowLeft`) setModal(modal - 1);
+// };
 
-export default function Modal({ show, dispatch, activeImage }: Props) {
-    const {
-        openLightbox,
-        closeLightbox,
-        nextImage,
-        prevImage
-    } = galleryActions(dispatch);
-
-    if (show) {
+export default function Modal({
+    carousel,
+    lightbox: { isOpen, isFullscreen },
+    closeFullscreen,
+    closeLightbox,
+    openLightbox,
+    goNextImage,
+    goPrevImage,
+    openFullscreen
+}: UseGallery) {
+    const activeImage = images[carousel];
+    if (isOpen) {
         React.useEffect(() => {
             document.body.style.overflowY = `hidden`;
 
@@ -46,15 +40,15 @@ export default function Modal({ show, dispatch, activeImage }: Props) {
                 document.body.style.removeProperty(`overflow-y`);
             };
         }, []);
-        const ref = React.useRef();
+        const ref = React.useRef<HTMLDivElement>(null);
         useClickOutside(ref, () => closeLightbox());
         return (
             // calling setModal without arguments will close the modal
             <ModalBackground
-                open={show}
+                open={isOpen}
                 // @ts-ignore
                 onClick={() => {
-                    if (show) {
+                    if (isOpen) {
                         openLightbox();
                     } else {
                         closeLightbox();
@@ -62,20 +56,26 @@ export default function Modal({ show, dispatch, activeImage }: Props) {
                 }}
             >
                 <ModalContainer
+                    isFullscreen={isFullscreen}
                     onClick={event => event.stopPropagation()}
                     // {...{ className, fullscreen }}
-                    // @ts-ignore
                     ref={ref}
                 >
                     {true && (
                         <>
                             <Close onClick={closeLightbox} />
                             <FullscreenToggle
-                            // onClick={() => setFullscreen(!fullscreen)}
-                            // {...{ fullscreen }}
+                                onClick={() => {
+                                    if (!isFullscreen) {
+                                        openFullscreen();
+                                    } else {
+                                        closeFullscreen();
+                                    }
+                                }}
+                                // {...{ fullscreen }}
                             />
-                            <Next onClick={nextImage} />
-                            <Prev onClick={prevImage} />
+                            <Next onClick={goNextImage} />
+                            <Prev onClick={goPrevImage} />
                         </>
                     )}
                     <ModalImageWrapper>

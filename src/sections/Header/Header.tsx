@@ -72,7 +72,7 @@ const Nav = styled(PosedGroupNav)<FixedNav>`
     left: 0;
     /* max-height: ${({ isOpen }) => (isOpen ? "100%" : "56px")}; */
     width: 100%;
-    z-index: 99;
+    z-index: 1;
     overflow-y: hidden;
     transition: background 0.3s ease 0s, border 0.3s ease 0s;
     border-bottom: ${({ theme: { colors } }) => `1px solid ${colors.grey}`};

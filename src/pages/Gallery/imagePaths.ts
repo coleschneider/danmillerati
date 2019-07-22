@@ -1,4 +1,4 @@
-const paths = [
+const paths: ImageProperties[] = [
     {
         name: "1965FordMustangConvertibleSide.jpg",
         height: 475,
@@ -1075,29 +1075,17 @@ const paths = [
     }
 ];
 
-export interface Image {
-    fallback?: string;
-    src: string;
-    width: number;
-    height: number;
-    caption?: string;
-    name: string;
-}
-
-const images: Image[] = paths.map(path => ({
+const images: GalleryImage[] = paths.map((path: ImageProperties) => ({
     name: path.name,
-    // eslint-disable-next-line
-    // fallback: require(`../../photos/sm/${path.name}`),
     // eslint-disable-next-line
     src: require(`../../photos/lg/${path.name}`),
     ...path
 }));
 
-export const imageFetchStatus = images.reduce(
-    (acc, curr) => {
-        acc[curr.name] = false;
-        return acc;
-    },
-    {} as Record<string, boolean>
-);
+export const imageFetchStatus: FromIndex = paths.reduce((acc, curr) => {
+    // @ts-ignore
+    acc[curr.name] = false;
+    return acc;
+}, {});
+
 export default images;

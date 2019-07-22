@@ -28,18 +28,19 @@ const fullscreen = css`
 interface ModalScreen {
     isFullscreen: boolean;
 }
-export const ModalContainer = styled.div`
+export const ModalContainer = styled.div<ModalScreen>`
     box-sizing: border-box;
     align-self: center;
     justify-self: center;
-    height: 80vh;
-    width: 80vw;
+    height: ${({ isFullscreen }) => (isFullscreen ? "100vh" : "80vh")};
+    width: ${({ isFullscreen }) => (isFullscreen ? "100vw" : "80vw")};
     position: relative;
     align-items: center;
     background: black;
     overflow: scroll;
     box-shadow: 0 0 3em black;
-    margin: calc(0.5em + 2vw);
+    margin: ${({ isFullscreen }) =>
+        isFullscreen ? "0px" : "calc(0.5em + 2vw)"};
 `;
 
 const controlsCss = css`

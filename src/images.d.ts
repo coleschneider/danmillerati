@@ -185,7 +185,7 @@ interface ImageProperties {
     description?: string;
     name: ImageName;
 }
-
+// eslint-disable-next-line
 interface GalleryImage extends ImageProperties {
     src: string;
 }

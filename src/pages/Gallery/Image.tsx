@@ -11,9 +11,11 @@ export type Props = {
     margin: number;
     direction: "row" | "column";
     key: string;
+    isLoaded: boolean;
     left?: number;
     getLoadStatus: getLoadStatusFn;
     top?: number;
+    imageStatus: FromIndex;
     onLoad: onLoadFn;
     onClick: (e: React.SyntheticEvent, p: Props) => void;
     containerHeight?: number;
@@ -26,28 +28,120 @@ const Imagewrap = styled.img<{ isLoaded: boolean | undefined }>`
     height: auto;
 `;
 
-function ImageRenderer(onLoad: onLoadFn, getLoadStatus: getLoadStatusFn) {
-    return function RenderImage(props: Props) {
-        const { onClick, photo } = props;
-        const isLoaded = getLoadStatus(photo.name);
+function RenderImage(props: Props) {
+    const { onClick, photo, imageStatus, onLoad, isLoaded } = props;
+    // eslint-disable-next-line
+    console.log(isLoaded)
+    return (
+        // eslint-disable-next-line
+        <div key={photo.name} onClick={(e: React.SyntheticEvent) =>onClick(e, props)}>
+            <LazyLoad
+                key={photo.name}
+                width={photo.width}
+                height={photo.height}
+                debounce={false}
+            >
+                <Imagewrap
+                    isLoaded={imageStatus[photo.name]}
+                    src={photo.src}
+                    alt=""
+                    onLoad={() => onLoad(photo.name)}
+                />
+            </LazyLoad>
+        </div>
+    );
+}
+
+// function ImageRenderer(props: Props) {
+//     const { photo, onLoad, imageStatus, onClick } = props;
+
+//     const isLoaded = (name: ImageName) => {
+//         return imageStatus[name];
+//     };
+//     return (
+//         // eslint-disable-next-line
+//         <div
+//             key={photo.name}
+//             onClick={(e: React.SyntheticEvent) => onClick(e, props)}
+//         >
+//             <LazyLoad
+//                 key={photo.name}
+//                 width={photo.width}
+//                 height={photo.height}
+//                 debounce={false}
+//             >
+//                 <Imagewrap
+//                     isLoaded={isLoaded(photo.name)}
+//                     src={photo.src}
+//                     alt=""
+//                     onLoad={() => onLoad(photo.name)}
+//                 />
+//             </LazyLoad>
+//         </div>
+//     );
+// }
+
+class ImageRenderer extends React.Component<Props> {
+    shouldComponentUpdate(nextProps: Props) {
+        const { isLoaded } = this.props;
+        if (isLoaded !== nextProps.isLoaded) {
+            return true;
+        }
+        return false;
+    }
+
+    // handleLoadStart = (e: React.SyntheticEvent) => {
+    //     const {
+    //         isLoaded,
+    //         photo: { name }
+    //     } = this.props;
+    //     if (!isLoaded) {
+    //         import(
+    //             /* webpackMode: "lazy-once" */
+    //             `../../photos/lg/${name}`
+    //         ).then(src => {
+    //             console.log(src);
+    //         });
+    //     }
+    //     console.log("Load started for photo: ", name);
+    //     console.log("Load Status: ", isLoaded);
+    // };
+
+    handleLoad = (e: React.SyntheticEvent) => {
+        const {
+            onLoad,
+            photo: { name }
+        } = this.props;
+        // console.log("Load finished for: ", name);
+        onLoad(name);
+    };
+
+    render() {
+        const {
+            photo: { name, width, height, src },
+            onLoad,
+            isLoaded,
+            onClick
+        } = this.props;
         return (
             // eslint-disable-next-line
-            <div key={photo.name} onClick={(e: React.SyntheticEvent) =>onClick(e, props)}>
+            <div key={name} onClick={(e: React.SyntheticEvent) =>onClick(e, this.props)}>
                 <LazyLoad
-                    key={photo.name}
-                    width={photo.width}
-                    height={photo.height}
+                    key={name}
+                    width={width}
+                    height={height}
                     debounce={false}
                 >
                     <Imagewrap
                         isLoaded={isLoaded}
-                        src={photo.src}
+                        src={src}
                         alt=""
-                        onLoad={() => onLoad(photo.name)}
+                        onLoad={this.handleLoad}
                     />
                 </LazyLoad>
             </div>
         );
-    };
+    }
 }
+
 export default ImageRenderer;

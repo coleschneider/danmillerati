@@ -97,7 +97,6 @@
     "@typescript-eslint/parser": "1.6.0",
     "babel-jest": "24.8.0",
     "babel-plugin-styled-components": "1.10.6",
-    "constate": "^1.2.0",
     "enzyme-adapter-react-16": "1.14.0",
     "enzyme-to-json": "3.3.5",
     "eslint": "5.3.0",

@@ -26,7 +26,7 @@ function GridGallery({
         initialWidth: 0,
         container: galleryEl
     });
-    const handleClick = (event, { index, name }) => {
+    const handleClick = (event: React.SyntheticEvent, { index, name }: {index: number; name: ImageName}) => {
         const hasLoaded =imageStatus[name]
         if(hasLoaded){
             setImage(index)
@@ -115,7 +115,7 @@ function GridGallery({
     const activeImage = imagePaths[carousel]
 
     return (
-        <div className="react-photo-gallery--gallery">
+        <div className="grid-gallery">
             <div ref={galleryEl} style={galleryStyle}>
                 {thumbs.map((thumb, index) => {
                     const { left, top, containerHeight, ...photo } = thumb;
@@ -123,7 +123,6 @@ function GridGallery({
                         left={left}
                         top={top}
                         key={thumb.key || thumb.src}
-                        containerHeight={containerHeight}
                         index={index}
                         margin={margin}
                         direction={direction}

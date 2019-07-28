@@ -1,12 +1,24 @@
 import * as React from "react";
-import images, { imageFetchStatus } from "../pages/Gallery/imagePaths";
+import images, { imageState } from "../pages/Gallery/imagePaths";
 
 const imageStatusReducer = (state: ImageStatus, action: GalleryActions) => {
     switch (action.type) {
         case "IMAGE_LOADED":
             return {
                 ...state,
-                [action.payload.name]: true
+                [action.payload.name]: {
+                    ...state[action.payload.name],
+                    isLoading: false,
+                    isCached: true
+                }
+            };
+        case "IMAGE_LOADING":
+            return {
+                ...state,
+                [action.payload.name]: {
+                    ...state[action.payload.name],
+                    isLoading: true
+                }
             };
         default:
             return state;
@@ -58,9 +70,9 @@ const carouselReducer = (state: Carousel, action: GalleryActions) => {
     }
 };
 
-const initialState: GalleryState = {
+export const initialState: GalleryState = {
     carousel: 0,
-    imageStatus: imageFetchStatus,
+    imageStatus: imageState,
     lightbox: {
         isOpen: false,
         isFullscreen: false
@@ -74,9 +86,9 @@ const galleryReducer = (
     imageStatus: imageStatusReducer(imageStatus, action),
     lightbox: lightboxReducer(lightbox, action)
 });
-
-function useGallery(initState: GalleryState = initialState): UseGallery {
-    const [state, dispatch] = React.useReducer(galleryReducer, initState);
+// @ts-ignore
+function useGallery(): UseGallery {
+    const [state, dispatch] = React.useReducer(galleryReducer, initialState);
     const openLightbox = () =>
         dispatch({
             type: "OPEN_LIGHTBOX"
@@ -100,6 +112,13 @@ function useGallery(initState: GalleryState = initialState): UseGallery {
                 name
             }
         });
+    const imageLoading = (name: ImageName) =>
+        dispatch({
+            type: "IMAGE_LOADING",
+            payload: {
+                name
+            }
+        });
     const setImage = (activeImage: number) =>
         dispatch({
             type: "SET_IMAGE",
@@ -115,8 +134,12 @@ function useGallery(initState: GalleryState = initialState): UseGallery {
         dispatch({
             type: "PREV_IMAGE"
         });
+    const getImageStatus = (name: any) => state.imageStatus[name].isLoading;
 
     return {
+        ...state,
+        getImageStatus,
+        imageLoading,
         openLightbox,
         closeLightbox,
         openFullscreen,
@@ -124,8 +147,7 @@ function useGallery(initState: GalleryState = initialState): UseGallery {
         loadImage,
         setImage,
         goNextImage,
-        goPrevImage,
-        ...state
+        goPrevImage
     };
 }
 

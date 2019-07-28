@@ -2,10 +2,10 @@ import * as React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import devices from "../../theme/devices";
-import thirtyTwoCoupe from "../../photos/lg/32coupeFlkr.jpg";
-import fiftySixSeats from "../../photos/lg/56seats.jpg";
-import fiskerRightFront from "../../photos/lg/Rightfrontcornner.jpg";
-import jaugeFisker from "../../photos/lg/Jauge-Jense-Viking-Concept-Bike-by-Henrik-Fisker-Seat.jpg";
+import thirtyTwoCoupe from "../../photos/32coupeFlkr.jpg";
+import fiftySixSeats from "../../photos/56seats.jpg";
+import fiskerRightFront from "../../photos/Rightfrontcornner.jpg";
+import jaugeFisker from "../../photos/Jauge-Jense-Viking-Concept-Bike-by-Henrik-Fisker-Seat.jpg";
 import { Header, Title, SubTitle } from "../Testimonials/Testimonials";
 
 const WorkWrapper = styled.div`

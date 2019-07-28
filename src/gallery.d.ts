@@ -137,8 +137,10 @@ interface UseGallery extends GalleryState {
     openLightbox: voidFn;
     closeLightbox: voidFn;
     openFullscreen: voidFn;
+    getImageStatus: (name: ImageName) => boolean;
     closeFullscreen: voidFn;
     loadImage: (name: ImageName) => void;
+    imageLoading: (name: ImageName) => void;
     setImage: (activeImage: number) => void;
     goNextImage: voidFn;
     goPrevImage: voidFn;

@@ -4,18 +4,19 @@ import "./index.css";
 import { ThemeProvider } from "styled-components";
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import App from "./App";
-import Router from "./utils/Router";
+
 import theme from "./theme";
 
 const Routes = () => {
     return (
-        <Router>
+        <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <App />
             </ThemeProvider>
-        </Router>
+        </BrowserRouter>
     );
 };
 ReactDOM.render(<Routes />, document.getElementById("root"));

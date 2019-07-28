@@ -3,7 +3,7 @@ import posed, { PoseGroup } from "react-pose";
 import styled from "styled-components";
 import { RouteComponentProps, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Gallery from "./pages/Gallery/Gallery";
+import Gallery, { useGalleryContext } from "./pages/Gallery/Gallery";
 import devices from "./theme/devices";
 
 const RouteContainer = posed.div({
@@ -22,14 +22,16 @@ const Main = styled(RouteContainer)`
 `;
 
 const Routes = ({ location }: RouteComponentProps) => (
-    <Switch location={location}>
-        <Route path="/gallery" component={Gallery} key="gallery" />
-        <PoseGroup>
-            <Main key={location.pathname}>
-                <Route exact path="/" component={Home} key="home" />
-                <Route path="/about" component={Home} key="about" />
-            </Main>
-        </PoseGroup>
-    </Switch>
+    <useGalleryContext.Provider>
+        <Switch location={location}>
+            <Route path="/gallery" component={Gallery} key="gallery" />
+            <PoseGroup>
+                <Main key={location.pathname}>
+                    <Route exact path="/" component={Home} key="home" />
+                    <Route path="/about" component={Home} key="about" />
+                </Main>
+            </PoseGroup>
+        </Switch>
+    </useGalleryContext.Provider>
 );
 export default Routes;

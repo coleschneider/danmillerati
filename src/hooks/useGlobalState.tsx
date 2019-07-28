@@ -18,6 +18,7 @@ const defaultValue = canUseProxy
 
 function createGlobalState<P, V>(
     useValue: (props: P) => V,
+    // eslint-disable-next-line
     createMemoInputs?: (value: V) => any[]
 ) {
     const Context = React.createContext(defaultValue as V);

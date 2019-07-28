@@ -25,19 +25,14 @@ const Photo = ({
     top,
     left
 }: Props) => {
-    const {
-        getImageStatus,
-        loadImage,
-        imageStatus,
-        imageLoading
-    } = useGalleryContext();
+    const { getImageStatus, loadImage, imageLoading } = useGalleryContext();
     const [ref, inView, entry] = useInView({
         /* Optional options */
         triggerOnce: true,
         threshold: 0
     });
 
-    const imgStyle = { margin, display: "block" } as any;
+    const imgStyle = { margin, display: "block" } as React.CSSProperties;
     if (direction === "column") {
         imgStyle.position = "absolute";
         imgStyle.left = left;

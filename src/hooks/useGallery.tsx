@@ -1,5 +1,6 @@
 import * as React from "react";
 import images, { imageState } from "../pages/Gallery/imagePaths";
+import resolveImage from "../utils/resolveImage";
 
 const imageStatusReducer = (state: ImageStatus, action: GalleryActions) => {
     switch (action.type) {
@@ -134,20 +135,49 @@ function useGallery(): UseGallery {
         dispatch({
             type: "PREV_IMAGE"
         });
-    const getImageStatus = (name: any) => state.imageStatus[name].isLoading;
+    const getImageStatus = (name: ImageName) =>
+        state.imageStatus[name].isLoading;
+    const imgs = Object.keys(state.imageStatus).map(
+        image => state.imageStatus[image]
+    );
+    const goNext = () => {
+        const potentialIndex =
+            state.carousel === imgs.length - 1 ? 0 : state.carousel + 1;
 
+        const nextImage = imgs[potentialIndex];
+        if (nextImage.isCached) {
+            Promise.resolve();
+            goNextImage();
+        }
+        return resolveImage(nextImage.src).then(() => {
+            goNextImage();
+        });
+    };
+
+    const goPrev = () => {
+        const potentialIndex =
+            state.carousel === 0 ? imgs.length - 1 : state.carousel - 1;
+        const prevImage = imgs[potentialIndex];
+        if (prevImage.isCached) {
+            Promise.resolve();
+            goPrevImage();
+        }
+        return resolveImage(prevImage.src).then(() => {
+            goPrevImage();
+        });
+    };
     return {
         ...state,
         getImageStatus,
         imageLoading,
         openLightbox,
         closeLightbox,
+        goPrev,
+        goNext,
         openFullscreen,
         closeFullscreen,
         loadImage,
-        setImage,
-        goNextImage,
-        goPrevImage
+        setImage
     };
 }
 

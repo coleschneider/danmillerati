@@ -14,45 +14,30 @@ import {
 import { useGalleryContext } from "../../pages/Gallery/Gallery";
 
 const { Close, Next, Prev, FullscreenToggle } = controls;
-
-// @ts-ignore
-const handleArrowKeys = (goPrev, goNext) => (event: KeyboardEvent) => {
-    if (event.key === `ArrowRight`) goNext();
-    else if (event.key === `ArrowLeft`) goPrev();
-};
-
-function Modal({ goNext, goPrev, thumbnails }: any) {
+interface Props {
+    thumbnails: GalleryImage[];
+}
+function Modal({ thumbnails }: Props) {
     const {
         lightbox: { isOpen, isFullscreen },
         closeLightbox,
         openLightbox,
-        goNextImage,
-        goPrevImage,
+        goNext,
+        goPrev,
         openFullscreen,
         closeFullscreen,
         carousel
     } = useGalleryContext();
-    const prev = () =>
-        goPrev().then(() => {
-            goPrevImage();
-        });
-    const next = () =>
-        goNext().then(() => {
-            goNextImage();
-        });
+
     React.useEffect(() => {
         if (isOpen) {
             document.body.style.overflowY = `hidden`;
         }
         const handleKeyboard = (e: KeyboardEvent) => {
             if (e.key === "ArrowRight") {
-                goNext().then(() => {
-                    goNextImage();
-                });
+                goNext();
             } else if (e.key === "ArrowLeft") {
-                goPrev().then(() => {
-                    goPrevImage();
-                });
+                goPrev();
             }
         };
         document.addEventListener(`keydown`, handleKeyboard);
@@ -97,8 +82,8 @@ function Modal({ goNext, goPrev, thumbnails }: any) {
                         }
                     }}
                 />
-                <Next onClick={next} />
-                <Prev onClick={prev} />
+                <Next onClick={() => goNext()} />
+                <Prev onClick={() => goPrev()} />
                 <ModalImageWrapper>
                     <ModalImagePadding />
                     <ModalImage src={thumbnails[carousel].src} alt="" />

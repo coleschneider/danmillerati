@@ -113,7 +113,7 @@ type LightboxActions =
     | CloseFullscreen;
 type CarouselActions = SetImage | NextImage | PrevImage;
 type GalleryActions = ImageActions | LightboxActions | CarouselActions;
-type ImageStatus = ImageFetchStatus;
+type ImageStatus = FromIndex;
 
 interface Lightbox {
     isOpen: boolean;
@@ -139,9 +139,9 @@ interface UseGallery extends GalleryState {
     openFullscreen: voidFn;
     getImageStatus: (name: ImageName) => boolean;
     closeFullscreen: voidFn;
+    goPrev: () => Promise<void>;
+    goNext: () => Promise<void>;
     loadImage: (name: ImageName) => void;
     imageLoading: (name: ImageName) => void;
     setImage: (activeImage: number) => void;
-    goNextImage: voidFn;
-    goPrevImage: voidFn;
 }

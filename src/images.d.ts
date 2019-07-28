@@ -169,5 +169,7 @@ interface ImageProperties {
 // eslint-disable-next-line
 interface GalleryImage extends ImageProperties {
     src: string;
+    isCached: boolean;
+    isLoading: boolean;
 }
-type FromIndex = { [k in ImageName]?: boolean };
+type FromIndex = { [k in ImageName]?: GalleryImage };

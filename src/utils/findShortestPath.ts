@@ -14,9 +14,7 @@ const buildPrecedentsMap = (graph, startNode, endNode) => {
 
     // priority queue of ALL nodes and storedShortestPaths
     // don't bother to delete them because it's faster to look at visited?
-    const pQueue = new Heap(function(n) {
-        return n.weight;
-    });
+    const pQueue = new Heap(n => n.weight);
     pQueue.push({ id: startNode, weight: 0 });
 
     while (pQueue.size()) {

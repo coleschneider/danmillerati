@@ -29,6 +29,7 @@
     "import/no-cycle": "off",
     "no-plusplus": "off",
     "no-undef": "off",
+    "no-constant-condition": "off",
     "prettier/prettier": "error",
     "@typescript-eslint/no-object-literal-type-assertion": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",

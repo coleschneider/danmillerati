@@ -33,7 +33,6 @@ function Grid() {
         const potentialIndex = carousel === imgs.length - 1 ? 0 : carousel + 1
         const nextImage = imgs[potentialIndex];
         if(nextImage.isCached){
-            goNextImage()
             return Promise.resolve()
         } else {
             return preloadImage(nextImage.src)
@@ -43,13 +42,10 @@ function Grid() {
     const handlePrev = () =>{
         const potentialIndex = carousel === 0 ? imgs.length - 1 : carousel - 1
         const prevImage = imgs[potentialIndex];
-
         if(prevImage.isCached){
-            goPrevImage()
             return Promise.resolve()
         } else {
             return preloadImage(prevImage.src)
-            
         }
     }
     return (

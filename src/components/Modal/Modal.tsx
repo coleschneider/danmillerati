@@ -26,30 +26,46 @@ function Modal({ goNext, goPrev, thumbnails }: any) {
         lightbox: { isOpen, isFullscreen },
         closeLightbox,
         openLightbox,
-        openFullscreen,
-        closeFullscreen,
         goNextImage,
         goPrevImage,
+        openFullscreen,
+        closeFullscreen,
         carousel
     } = useGalleryContext();
-
+    const prev = () =>
+        goPrev().then(() => {
+            goPrevImage();
+        });
+    const next = () =>
+        goNext().then(() => {
+            goNextImage();
+        });
     React.useEffect(() => {
         if (isOpen) {
             document.body.style.overflowY = `hidden`;
         }
-
-        document.addEventListener(`keydown`, handleArrowKeys(goPrev, goNext));
+        const handleKeyboard = (e: KeyboardEvent) => {
+            if (e.key === "ArrowRight") {
+                goNext().then(() => {
+                    goNextImage();
+                });
+            } else if (e.key === "ArrowLeft") {
+                goPrev().then(() => {
+                    goPrevImage();
+                });
+            }
+        };
+        document.addEventListener(`keydown`, handleKeyboard);
         return () => {
-            document.removeEventListener(
-                `keydown`,
-                handleArrowKeys(goPrev, goNext)
-            );
+            document.removeEventListener(`keydown`, handleKeyboard);
             document.body.style.removeProperty(`overflow-y`);
         };
-    }, [carousel, goNext, goPrev, isOpen]);
+        // eslint-disable-next-line
+    }, [carousel, isOpen]);
 
     const ref = React.useRef<HTMLDivElement>(null);
     useClickOutside(ref, () => closeLightbox());
+
     return (
         // calling setModal without arguments will close the modal
         <ModalBackground
@@ -81,14 +97,8 @@ function Modal({ goNext, goPrev, thumbnails }: any) {
                         }
                     }}
                 />
-                <Next
-                    onClick={() =>
-                        goNext().then(() => {
-                            goNextImage();
-                        })
-                    }
-                />
-                <Prev onClick={() => goPrev().then(() => goPrevImage())} />
+                <Next onClick={next} />
+                <Prev onClick={prev} />
                 <ModalImageWrapper>
                     <ModalImagePadding />
                     <ModalImage src={thumbnails[carousel].src} alt="" />

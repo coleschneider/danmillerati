@@ -6,18 +6,11 @@ import Modal from "../../components/Modal/Modal";
 import useGallery from "../../hooks/useGallery";
 import createUseGlobalState from '../../hooks/useGlobalState'
 
-interface SlideProps {
-    photo: GalleryImage;
-    next: GalleryImage;
-    previous: GalleryImage;
-    index: number;
-}
-const preloadImage = (url) => {
+
+const preloadImage = (url): Promise<string> => {
     return new Promise((resolve, reject) => {
         const image = new Image();
-        
-        // @ts-ignore
-        image.onload = resolve(url)
+        image.onload = () => resolve(url)
         image.onerror = reject;
         image.src = url;
     })
@@ -27,7 +20,7 @@ function Grid() {
     const {lightbox: {isOpen}, carousel, imageStatus, goNextImage, goPrevImage} = useGalleryContext()
     const imgs = Object.keys(imageStatus).map(image => imageStatus[image])
 
-    const handleNext = () =>{
+    const handleNext = async() => {
         const potentialIndex = carousel === imgs.length - 1 ? 0 : carousel + 1
         const nextImage = imgs[potentialIndex];
         if(nextImage.isCached){

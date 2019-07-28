@@ -25,14 +25,19 @@ const Photo = ({
     top,
     left
 }: Props) => {
-    const { getImageStatus, loadImage, imageLoading } = useGalleryContext();
-
-    const [ref, inView] = useInView({
+    const {
+        getImageStatus,
+        loadImage,
+        imageStatus,
+        imageLoading
+    } = useGalleryContext();
+    const [ref, inView, entry] = useInView({
+        /* Optional options */
         triggerOnce: true,
         threshold: 0
     });
 
-    const imgStyle = { margin, display: "block" } as React.CSSProperties;
+    const imgStyle = { margin, display: "block" } as any;
     if (direction === "column") {
         imgStyle.position = "absolute";
         imgStyle.left = left;
@@ -53,7 +58,8 @@ const Photo = ({
         if (inView) {
             loadImage(photo.name);
         }
-    }, [inView, loadImage, photo.name]);
+        // eslint-disable-next-line
+    }, [inView]);
 
     return (
         <div
@@ -83,38 +89,5 @@ const Photo = ({
         </div>
     );
 };
-
-// export const photoPropType = PropTypes.shape({
-//     key: PropTypes.string,
-//     src: PropTypes.string.isRequired,
-//     width: PropTypes.number.isRequired,
-//     height: PropTypes.number.isRequired,
-//     alt: PropTypes.string,
-//     title: PropTypes.string,
-//     srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-//     sizes: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
-// });
-
-// Photo.propTypes = {
-//     index: PropTypes.number.isRequired,
-//     onClick: PropTypes.func,
-//     photo: photoPropType.isRequired,
-//     margin: PropTypes.number,
-//     top: props => {
-//         if (props.direction === "column" && typeof props.top !== "number") {
-//             return new Error(
-//                 "top is a required number when direction is set to `column`"
-//             );
-//         }
-//     },
-//     left: props => {
-//         if (props.direction === "column" && typeof props.left !== "number") {
-//             return new Error(
-//                 "left is a required number when direction is set to `column`"
-//             );
-//         }
-//     },
-//     direction: PropTypes.string
-// };
 
 export default Photo;

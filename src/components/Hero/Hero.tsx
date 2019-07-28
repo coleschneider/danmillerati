@@ -1,7 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
+import placeholderImage from "./small_hero.jpg";
 import frontF1 from "../../photos/blackiesseats.jpg";
 import devices from "../../theme/devices";
+import resolveImage from "../../utils/resolveImage";
 
 const ImageWrapper = styled.div`
     position: relative;
@@ -55,14 +57,22 @@ const HeroImage = styled.img`
     opacity: 1;
     transition: opacity 0.5s ease 0s;
 `;
-const Hero = () => (
-    <ImageWrapper>
-        <Padding />
-        <Background />
-        <picture>
-            <HeroImage src={frontF1} alt="" />
-        </picture>
-    </ImageWrapper>
-);
+const Hero = () => {
+    const heroRef = React.useRef(null);
+    React.useEffect(() => {
+        resolveImage(frontF1).then(() => {
+            heroRef.current.src = frontF1;
+        });
+    }, []);
+    return (
+        <ImageWrapper>
+            <Padding />
+            <Background />
+            <picture>
+                <HeroImage ref={heroRef} src={placeholderImage} alt="" />
+            </picture>
+        </ImageWrapper>
+    );
+};
 
 export default Hero;

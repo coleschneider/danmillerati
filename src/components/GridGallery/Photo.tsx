@@ -1,7 +1,28 @@
 import React from "react";
+import styled from "styled-components";
 import { useInView } from "../../hooks/useInView";
 import { useGalleryContext } from "../../pages/Gallery/Gallery";
 
+interface ImageStyle {
+    height: number;
+    width: number;
+    left: number;
+    top: number;
+    margin: number;
+    direction: "row" | "column";
+    isLoaded: boolean;
+}
+const ProgressiveImage = styled.img<ImageStyle>`
+    display: block;
+    cursor: pointer;
+    position: ${({ direction }) => direction === "column" && "absolute"};
+    top: ${({ top, direction }) => direction === "column" && top};
+    left: ${({ left, direction }) => direction === "column" && left};
+    height: ${({ height }) => height};
+    width: ${({ width }) => width};
+    opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
+    transition: all 1s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+`;
 const imgWithClick = { cursor: "pointer" };
 // eslint-disable-next-line
 interface Props {
@@ -68,16 +89,18 @@ const Photo = ({
             }}
         >
             {inView && (
-                <img
+                <ProgressiveImage
                     alt=""
+                    isLoaded={isLoaded}
+                    direction={direction}
+                    height={photo.height}
+                    width={photo.width}
+                    margin={margin}
+                    left={left}
+                    top={top}
                     src={photo.src}
                     onLoad={() => {
                         imageLoading(photo.name);
-                    }}
-                    style={{
-                        ...finalStyle,
-                        opacity: isLoaded ? 1 : 0,
-                        transition: "all 1s cubic-bezier(0.23, 1, 0.32, 1) 0s"
                     }}
                 />
             )}

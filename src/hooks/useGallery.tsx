@@ -146,8 +146,8 @@ function useGallery(): UseGallery {
 
         const nextImage = imgs[potentialIndex];
         if (nextImage.isCached) {
-            Promise.resolve();
             goNextImage();
+            return Promise.resolve();
         }
         return resolveImage(nextImage.src).then(() => {
             goNextImage();
@@ -159,8 +159,8 @@ function useGallery(): UseGallery {
             state.carousel === 0 ? imgs.length - 1 : state.carousel - 1;
         const prevImage = imgs[potentialIndex];
         if (prevImage.isCached) {
-            Promise.resolve();
             goPrevImage();
+            return Promise.resolve();
         }
         return resolveImage(prevImage.src).then(() => {
             goPrevImage();

@@ -1,109 +1,127 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Navigation should hide the items if isOpen is false 1`] = `
-<Navigation__ListContainer>
+<headerStyles__ListContainer>
   <Logo
     iconType="Logo"
     isFixed={false}
     viewBox="0 0 194.69 53.44"
   />
-  <Navigation__MenuItem
+  <headerStyles__MenuItem
+    isFixed={false}
     key="/"
     pose="closed"
   >
-    <Link
+    <NavLink
+      activeClassName="active"
+      exact={true}
       onClick={[Function]}
       to="/"
     >
       Home
-    </Link>
-  </Navigation__MenuItem>
-  <Navigation__MenuItem
+    </NavLink>
+  </headerStyles__MenuItem>
+  <headerStyles__MenuItem
+    isFixed={false}
     key="/about"
     pose="closed"
   >
-    <Link
+    <NavLink
+      activeClassName="active"
       onClick={[Function]}
       to="/about"
     >
       About
-    </Link>
-  </Navigation__MenuItem>
-  <Navigation__MenuItem
+    </NavLink>
+  </headerStyles__MenuItem>
+  <headerStyles__MenuItem
+    isFixed={false}
     key="/contact"
     pose="closed"
   >
-    <Link
+    <NavLink
+      activeClassName="active"
       onClick={[Function]}
       to="/contact"
     >
       Contact
-    </Link>
-  </Navigation__MenuItem>
-  <Navigation__MenuItem
+    </NavLink>
+  </headerStyles__MenuItem>
+  <headerStyles__MenuItem
+    isFixed={false}
     key="/gallery"
     pose="closed"
   >
-    <Link
+    <NavLink
+      activeClassName="active"
       onClick={[Function]}
       to="/gallery"
     >
       Gallery
-    </Link>
-  </Navigation__MenuItem>
-</Navigation__ListContainer>
+    </NavLink>
+  </headerStyles__MenuItem>
+</headerStyles__ListContainer>
 `;
 
 exports[`Navigation should show the items if isOpen is true 1`] = `
-<Navigation__ListContainer>
+<headerStyles__ListContainer>
   <Logo
     iconType="Logo"
     isFixed={false}
     viewBox="0 0 194.69 53.44"
   />
-  <Navigation__MenuItem
+  <headerStyles__MenuItem
+    isFixed={false}
     key="/"
     pose="open"
   >
-    <Link
+    <NavLink
+      activeClassName="active"
+      exact={true}
       onClick={[Function]}
       to="/"
     >
       Home
-    </Link>
-  </Navigation__MenuItem>
-  <Navigation__MenuItem
+    </NavLink>
+  </headerStyles__MenuItem>
+  <headerStyles__MenuItem
+    isFixed={false}
     key="/about"
     pose="open"
   >
-    <Link
+    <NavLink
+      activeClassName="active"
       onClick={[Function]}
       to="/about"
     >
       About
-    </Link>
-  </Navigation__MenuItem>
-  <Navigation__MenuItem
+    </NavLink>
+  </headerStyles__MenuItem>
+  <headerStyles__MenuItem
+    isFixed={false}
     key="/contact"
     pose="open"
   >
-    <Link
+    <NavLink
+      activeClassName="active"
       onClick={[Function]}
       to="/contact"
     >
       Contact
-    </Link>
-  </Navigation__MenuItem>
-  <Navigation__MenuItem
+    </NavLink>
+  </headerStyles__MenuItem>
+  <headerStyles__MenuItem
+    isFixed={false}
     key="/gallery"
     pose="open"
   >
-    <Link
+    <NavLink
+      activeClassName="active"
       onClick={[Function]}
       to="/gallery"
     >
       Gallery
-    </Link>
-  </Navigation__MenuItem>
-</Navigation__ListContainer>
+    </NavLink>
+  </headerStyles__MenuItem>
+</headerStyles__ListContainer>
 `;

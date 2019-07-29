@@ -8,5 +8,6 @@ export default {
     black: "#252525",
     tan: "rgb(247, 247, 247)",
     overlay: "rgb(17, 17, 17)",
-    dimGrey: "dimgrey"
+    dimGrey: "dimgrey",
+    offWhite: "rgb(247, 247, 247)"
 };

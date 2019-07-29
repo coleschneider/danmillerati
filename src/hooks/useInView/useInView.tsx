@@ -1,16 +1,13 @@
-/* eslint-disable */
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import { observe, unobserve } from "./intersection";
-import { InViewHookResponse, IntersectionOptions } from "./index";
 
-type State = {
+interface State {
     inView: boolean;
     entry?: IntersectionObserverEntry;
-};
+}
 
-export function useInView(
-    options: IntersectionOptions = {}
-): InViewHookResponse {
+function useInView(options: IntersectionOptions = {}): InViewHookResponse {
     const ref = React.useRef<Element>();
     const [state, setState] = React.useState<State>({
         inView: false,
@@ -26,7 +23,6 @@ export function useInView(
                 observe(
                     node,
                     (inView, intersection) => {
-                        // @ts-ignore
                         setState({ inView, entry: intersection });
 
                         if (inView && options.triggerOnce) {
@@ -53,3 +49,4 @@ export function useInView(
 
     return [setRef, state.inView, state.entry];
 }
+export default useInView;

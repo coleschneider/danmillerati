@@ -1,4 +1,4 @@
-const images = [
+const images: ImageProperties[] = [
     { name: "Backtobacklounge.jpg", height: 190, width: 190, description: "" },
     { name: "electricpontoon.jpg", height: 190, width: 190, description: "" },
     { name: "32roadsterred.jpg", height: 384, width: 576, description: "" },

@@ -20,7 +20,7 @@ const App = () => {
                     });
                     return (
                         <AppContainer>
-                            <Header />
+                            <Header stickyWhitelist={["/gallery", "/about"]} />
                             <Routes {...props} />
                             {!isGalleryRoutes && <Footer />}
                         </AppContainer>

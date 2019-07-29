@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import posed from "react-pose";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps, matchPath } from "react-router-dom";
 import devices from "../../theme/devices";
 import Menu from "./Menu";
 import Navigation from "./Navigation";
@@ -82,10 +82,24 @@ const Nav = styled(PosedGroupNav)<FixedNav>`
         bottom: auto;
     }
 `;
-
-const Header = (props: RouteComponentProps) => {
+interface Props extends RouteComponentProps {
+    stickyWhitelist: string[];
+}
+const Header = (props: Props) => {
     const [isOpen, toggle] = React.useState(false);
-    const isFixed = useScroll("nav-id");
+    const {
+        location: { pathname },
+        stickyWhitelist
+    } = props;
+    const disable = stickyWhitelist.some(path => {
+        return (
+            matchPath(path, {
+                path: pathname,
+                exact: true
+            }) !== null
+        );
+    });
+    const isFixed = useScroll("nav-id", disable);
 
     const toggleMenu = () => toggle(!isOpen);
     return (

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useInView } from "../../hooks/useInView";
+import useInView from "../../hooks/useInView/useInView";
 import { useGalleryContext } from "../../pages/Gallery/Gallery";
 
 interface ImageStyle {

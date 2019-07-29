@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GridGallery should work 1`] = `
+<useGallery.Provider>
+  <GalleryWrapper>
+    <GridGallery
+      direction="row"
+      margin={2}
+      photos={
+        Array [
+          Object {
+            "description": "",
+            "height": 190,
+            "isCached": true,
+            "isLoading": false,
+            "name": "Backtobacklounge.jpg",
+            "src": "Backtobacklounge.jpg",
+            "width": 190,
+          },
+          Object {
+            "description": "",
+            "height": 190,
+            "isCached": true,
+            "isLoading": false,
+            "name": "electricpontoon.jpg",
+            "src": "electricpontoon.jpg",
+            "width": 190,
+          },
+          Object {
+            "description": "",
+            "height": 384,
+            "isCached": false,
+            "isLoading": false,
+            "name": "32roadsterred.jpg",
+            "src": "32roadsterred.jpg",
+            "width": 576,
+          },
+          Object {
+            "description": "",
+            "height": 216,
+            "isCached": false,
+            "isLoading": false,
+            "name": "356Ccabdoor.jpg",
+            "src": "356Ccabdoor.jpg",
+            "width": 288,
+          },
+        ]
+      }
+      targetRowHeight={300}
+    >
+      <div>
+         
+      </div>
+    </GridGallery>
+  </GalleryWrapper>
+</useGallery.Provider>
+`;

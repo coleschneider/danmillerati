@@ -27,7 +27,10 @@ function checkOffset(node: HTMLElement, sticky: number, setText: StickyCb) {
         handleNormalBehaviour(node, setText);
     }
 }
-export default function useScrollListner(nodeId: string) {
+export default function useScrollListner(
+    nodeId: string,
+    disable: boolean = false
+) {
     const [text, setText] = useState(false);
     useEffect(() => {
         const node = document.getElementById(nodeId) as HTMLElement;
@@ -39,5 +42,6 @@ export default function useScrollListner(nodeId: string) {
         });
         return clearEventHandler(scrollCallBack);
     }, [nodeId]);
+    if (disable) return true;
     return text;
 }

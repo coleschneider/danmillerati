@@ -1,20 +1,36 @@
-// // import invariant from "invariant";
-/* eslint-disable */
+import invariant from "invariant";
+
+const INSTANCE_MAP: Map<Element, ObserverInstance> = new Map();
+const OBSERVER_MAP: Map<string, IntersectionObserver> = new Map();
+const ROOT_IDS: Map<Element, string> = new Map();
+
 let consecutiveRootId = 0;
 
+/**
+ * Generate a unique ID for the root element
+ * @param root
+ */
 function getRootId(root?: Element | null) {
     if (!root) return "";
     if (ROOT_IDS.has(root)) return ROOT_IDS.get(root);
     consecutiveRootId += 1;
     ROOT_IDS.set(root, consecutiveRootId.toString());
+    // eslint-disable-next-line
     return ROOT_IDS.get(root) + "_";
 }
-const INSTANCE_MAP: Map<Element, IntersectionObserver> = new Map();
-const OBSERVER_MAP: Map<string, IntersectionObserver> = new Map();
-const ROOT_IDS: Map<Element, string> = new Map();
+
+/**
+ * Monitor element, and trigger callback when element becomes inView
+ * @param element {HTMLElement}
+ * @param callback {Function} Called with inView
+ * @param options {Object} InterSection observer options
+ * @param options.threshold {Number} Number between 0 and 1, indicating how much of the element should be inView before triggering
+ * @param options.root {HTMLElement}
+ * @param options.rootMargin {String} The CSS margin to apply to the root element.
+ */
 export function observe(
     element: Element,
-    callback: IntersectionObserverCallback,
+    callback: ObserverInstanceCallback,
     options: IntersectionObserverInit = {}
 ) {
     // IntersectionObserver needs a threshold to trigger, so set it to 0 if it's not defined.
@@ -22,12 +38,16 @@ export function observe(
     if (!options.threshold) options.threshold = 0;
     const { root, rootMargin, threshold } = options;
     // Validate that the element is not being used in another <Observer />
-
+    invariant(
+        !INSTANCE_MAP.has(element),
+        "react-intersection-observer: Trying to observe %s, but it's already being observed by another instance.\nMake sure the `ref` is only used by a single <Observer /> instance.\n\n%s",
+        element
+    );
     /* istanbul ignore if */
     if (!element) return;
     // Create a unique ID for this observer instance, based on the root, root margin and threshold.
     // An observer with the same options can be reused, so lets use this fact
-    let observerId: string =
+    const observerId: string =
         getRootId(root) +
         (rootMargin
             ? `${threshold.toString()}_${rootMargin}`
@@ -35,12 +55,13 @@ export function observe(
 
     let observerInstance = OBSERVER_MAP.get(observerId);
     if (!observerInstance) {
+        // eslint-disable-next-line
         observerInstance = new IntersectionObserver(onChange, options);
         /* istanbul ignore else  */
         if (observerId) OBSERVER_MAP.set(observerId, observerInstance);
     }
 
-    const instance: any = {
+    const instance: ObserverInstance = {
         callback,
         element,
         inView: false,
@@ -54,16 +75,20 @@ export function observe(
 
     INSTANCE_MAP.set(element, instance);
     observerInstance.observe(element);
-
+    // eslint-disable-next-line
     return instance;
 }
 
+/**
+ * Stop observing an element. If an element is removed from the DOM or otherwise destroyed,
+ * make sure to call this method.
+ * @param element {Element}
+ */
 export function unobserve(element: Element | null) {
     if (!element) return;
     const instance = INSTANCE_MAP.get(element);
 
     if (instance) {
-        // @ts-ignore
         const { observerId, observer } = instance;
         const { root } = observer;
 
@@ -77,12 +102,10 @@ export function unobserve(element: Element | null) {
         if (observerId) {
             INSTANCE_MAP.forEach((item, key) => {
                 if (key !== element) {
-                    // @ts-ignore
                     if (item.observerId === observerId) {
                         itemsLeft = true;
                         rootObserved = true;
                     }
-                    // @ts-ignore
                     if (item.observer.root === root) {
                         rootObserved = true;
                     }
@@ -102,7 +125,7 @@ export function unobserve(element: Element | null) {
 
 /**
  * Destroy all IntersectionObservers currently connected
- **/
+ * */
 export function destroy() {
     OBSERVER_MAP.forEach(observer => {
         observer.disconnect();
@@ -124,7 +147,6 @@ function onChange(changes: IntersectionObserverEntry[]) {
         if (instance && intersectionRatio >= 0) {
             // If threshold is an array, check if any of them intersects. This just triggers the onChange event multiple times.
             let inView = instance.thresholds.some(threshold => {
-                // @ts-ignore
                 return instance.inView
                     ? intersectionRatio > threshold
                     : intersectionRatio >= threshold;
@@ -135,10 +157,15 @@ function onChange(changes: IntersectionObserverEntry[]) {
                 // Otherwise it reports a threshold of 0
                 inView = inView && isIntersecting;
             }
-            // @ts-ignore
+
             instance.inView = inView;
-            // @ts-ignore
             instance.callback(inView, intersection);
         }
     });
 }
+
+export default {
+    observe,
+    unobserve,
+    destroy
+};

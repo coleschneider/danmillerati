@@ -1,20 +1,32 @@
-/* eslint-disable */
-import * as React from "react";
-//@ts-ignore
-import { InView } from "./InView";
-//@ts-ignore
-export { InView } from "./InView";
-export { useInView } from "./useInView";
-export default InView;
+// type ObserverInstanceCallback = (
+//     inView: boolean,
+//     intersection: IntersectionObserverEntry
+// ) => void;
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+// type ObserverInstance = {
+//     inView: boolean;
+//     readonly callback: ObserverInstanceCallback;
+//     readonly element: Element;
+//     readonly observerId: string;
+//     readonly observer: IntersectionObserver;
+//     readonly thresholds: ReadonlyArray<number>;
+// };
+// interface ObserverRenderProps {
+//     inView: boolean;
+//     entry?: IntersectionObserverEntry | undefined;
+//     reef: React.RefObject<any> | ((node?: Element | null) => void);
+// }
 
-export type ObserverInstanceCallback = (
+// interface IntersectionOptions extends IntersectionObserverInit {
+//     triggerOnce?: boolean;
+// }
+
+type ObserverInstanceCallback = (
     inView: boolean,
     intersection: IntersectionObserverEntry
 ) => void;
 
-export type ObserverInstance = {
+type ObserverInstance = {
     inView: boolean;
     readonly callback: ObserverInstanceCallback;
     readonly element: Element;
@@ -29,12 +41,12 @@ interface RenderProps {
     ref: React.RefObject<any> | ((node?: Element | null) => void);
 }
 
-export interface IntersectionOptions extends IntersectionObserverInit {
+interface IntersectionOptions extends IntersectionObserverInit {
     /** Only trigger the inView callback once */
     triggerOnce?: boolean;
 }
 
-export interface IntersectionObserverProps extends IntersectionOptions {
+interface IntersectionObserverProps extends IntersectionOptions {
     /**
      * Children expects a function that receives an object
      * contain an `inView` boolean and `ref` that should be
@@ -49,7 +61,7 @@ export interface IntersectionObserverProps extends IntersectionOptions {
 /**
  * Types specific to the PlainChildren rendering of InView
  * */
-export type PlainChildrenProps = IntersectionOptions & {
+type PlainChildrenProps = IntersectionOptions & {
     children: React.ReactNode;
 
     /**
@@ -68,7 +80,7 @@ export type PlainChildrenProps = IntersectionOptions & {
     onChange?: (inView: boolean, entry: IntersectionObserverEntry) => void;
 } & Omit<React.HTMLProps<HTMLElement>, "onChange">;
 
-export type InViewHookResponse = [
+type InViewHookResponse = [
     ((node?: Element | null) => void),
     boolean,
     IntersectionObserverEntry | undefined

@@ -10,6 +10,7 @@ declare module "styled-components" {
             mainBlue: string;
             white: string;
             black: string;
+            offWhite: string;
             overlay: string;
             dimGrey: string;
             lightGrey: string;

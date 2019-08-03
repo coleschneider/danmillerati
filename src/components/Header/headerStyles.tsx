@@ -60,13 +60,14 @@ export const anchor = ({ color }: { color: string }) => css`
         cursor: pointer;
         position: relative;
         font-weight: bold;
-        color: ${color};
+        color: ${({ theme: { colors } }) => colors.black};
         text-transform: uppercase;
         font-size: 1.5em;
         text-decoration: none;
         transition: opacity 0.3s ease 0s;
         border-bottom: 1px solid transparent;
         @media ${devices.desktop} {
+            color: ${color};
             font-size: 0.85em;
             letter-spacing: 0.8px;
             height: 56px;

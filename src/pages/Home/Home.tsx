@@ -113,7 +113,7 @@ function useTextAnimation(words: string[]) {
 }
 
 function Home() {
-    const words = ["Auto", "Boat", "Aircrafts"];
+    const words = ["Auto", "Boat", "Aircraft"];
 
     const word = useTextAnimation(words);
     const prevWord = usePrevious({ value: word });
